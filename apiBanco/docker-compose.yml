@@ -1,0 +1,68 @@
+version: "3"
+services:
+    api-node1:
+        build: ./api
+        image: apiBanco
+        container_name: "node1"
+        environment:
+            - MESSAGE=node1
+        ports:
+            - "4000"
+        links:
+            - mongo
+        deploy:
+            replicas: 2
+            update_config:
+                parallelism: 2
+                delay: 10s
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                max_attempts: 3
+                window: 120s
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:4000/test"]
+            interval: 40s
+            timeout: 20s
+            retries: 3
+
+    api-node2:
+        build: ./api
+        image: apiBanco
+        container_name: "node2"
+        environment:
+            - MESSAGE=node2
+        ports:
+            - "4000"
+        links:
+             - mongo
+        deploy:
+            replicas: 2
+            update_config:
+                parallelism: 2
+                delay: 10s
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                max_attempts: 3
+                window: 120s
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:4000/test"]
+            interval: 40s
+            timeout: 20s
+            retries: 3
+    mongo:
+        image: mongo
+        volumes:
+             - /data/mongodb/db:/data/db
+        ports:
+             - "27017:27017"
+    loadbalancer:
+        build: ./nginx
+        image: "apiLoadbalancer"
+        container_name: "loadbalancer"
+        links:
+            - api-node1
+            - api-node2
+        ports:
+            - "80:80"
