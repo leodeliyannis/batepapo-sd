@@ -1,4 +1,4 @@
 # batepapo-sd
 Bate-Papo por Tópicos; trabalho de implementação da disciplina de Sistemas Distribuídos
 
-![alt text](https://raw.githubusercontent.com/claudemirsimons/batepapo-sd/master/imagens/Trabalho de PPD.png)
+![alt text](https://github.com/leodeliyannis/batepapo-sd/blob/master/imagens/ApiBanco%20-%20MongoDB.png)
