@@ -2,6 +2,7 @@
 
 ### Sobre:
 ApiBanco desenvolvida em NodeJS, é responsável por fazer todas as operações no banco(MongoDB), criado com o objetivo de centralizar a logica crud.
+
 Note que todos os pontos serão executados em container docker, dito isso não o citarei novamente.
 
 ### Origem das requisições:
@@ -52,12 +53,12 @@ Note que todos os pontos serão executados em container docker, dito isso não o
 mutation{createUsuario (input: {Nome IPaddres}) {cdRetorno dsRetorno}}
 ```
 
-- updateUsuario - Cria novo usuário.
+- updateUsuario - Atualiza usuário existente, utilizando o 'id' como chave de identificação.
 ```bash
 mutation{updateUsuario (input: {_id Nome IPaddres}) {cdRetorno dsRetorno}}
 ```
 
-- deleteUsuario - Cria novo usuário.
+- deleteUsuario - Deleta usuário existente, utilizando o 'id' como chave de identificação.
 ```bash
 mutation{deleteUsuario (input: {_id}) {cdRetorno dsRetorno}}
 ```
