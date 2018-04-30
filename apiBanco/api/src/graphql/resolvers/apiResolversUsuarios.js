@@ -2,11 +2,11 @@ const usuarioModel = require('../../models/usuario');
 
 const apiResolversUsuario = {
 
-  getProjects: () => {
-    let projects = usuarioModel.find({},{Acesso:0, Configuracao:0}).exec()//function (err, docs) {console.log(docs[0])}
+  getUsuarios: () => {
+    let usuario = usuarioModel.find({},{Acesso:0, Configuracao:0}).exec()//function (err, docs) {console.log(docs[0])}
 
-    if (!projects) {
-      throw new Error('Erro ao recuperar os projetos do MongoDB')
+    if (!usuario) {
+      throw new Error('Erro ao recuperar os usuários do Banco de Dados')
     }
 
     return projects
@@ -23,7 +23,7 @@ const apiResolversUsuario = {
     let uModel = new usuarioModel(create);
     let newUsuarioInDB = uModel.save();
     if (!newUsuarioInDB) {
-      return {cdRetorno: -2, dsRetorno: 'Erro ao inserir usuario no Banco de Dados'}
+      return {cdRetorno: -2, dsRetorno: 'Erro ao inserir usuário no Banco de Dados'}
     }
 
     return {cdRetorno: 0, dsRetorno: 'Sucesso'}
@@ -51,7 +51,7 @@ const apiResolversUsuario = {
     ).exec()
 
     if (!newUpdate) {
-      return {cdRetorno: -2, dsRetorno: 'Erro ao realizar o update do Usuario no Banco de Dados'}
+      return {cdRetorno: -2, dsRetorno: 'Erro ao realizar o update do usuário no Banco de Dados'}
     }
 
     return {cdRetorno: 0, dsRetorno: 'Sucesso'}
@@ -62,7 +62,7 @@ const apiResolversUsuario = {
     let removeUsuario = usuarioModel.find({ _id:input._id }).remove().exec()
 
     if (!removeUsuario) {
-      return {cdRetorno: -2, dsRetorno: 'Erro ao remover o Usuario do Banco de Dados'}
+      return {cdRetorno: -2, dsRetorno: 'Erro ao remover o usuário do Banco de Dados'}
     }
 
     return {cdRetorno: 0, dsRetorno: 'Sucesso'}
