@@ -1,4 +1,4 @@
-package br.com.upf.sd.utils;
+package br.com.ufp.sd.utils;
 
 public class ValidationException extends Exception {
 

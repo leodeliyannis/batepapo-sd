@@ -1,4 +1,4 @@
-package br.com.upf.sd.utils;
+package br.com.ufp.sd.utils;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

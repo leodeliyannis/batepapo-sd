@@ -1,4 +1,4 @@
-package br.com.upf.sd.utils;
+package br.com.ufp.sd.utils;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;

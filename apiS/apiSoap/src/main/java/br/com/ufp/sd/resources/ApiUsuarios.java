@@ -1,4 +1,4 @@
-package br.com.upf.sd.resources;
+package br.com.ufp.sd.resources;
 
 import java.util.List;
 
@@ -11,11 +11,11 @@ import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
-import br.com.upf.sd.types.ConsultaUsuariosResponse;
-import br.com.upf.sd.types.Usuario;
-import br.com.upf.sd.utils.ResponseType;
-import br.com.upf.sd.utils.ResponseUtil;
-import br.com.upf.sd.utils.UsuariosJsonUtil;
+import br.com.ufp.sd.types.ConsultaUsuariosResponse;
+import br.com.ufp.sd.types.Usuario;
+import br.com.ufp.sd.utils.ResponseType;
+import br.com.ufp.sd.utils.ResponseUtil;
+import br.com.ufp.sd.utils.UsuariosJsonUtil;
 
 public class ApiUsuarios {
 	

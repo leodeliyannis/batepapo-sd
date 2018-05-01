@@ -1,4 +1,4 @@
-package br.com.upf.sd.types;
+package br.com.ufp.sd.types;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
 
-import br.com.upf.sd.utils.ResponseType;
+import br.com.ufp.sd.utils.ResponseType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "getUsuariosServiceResponse", 

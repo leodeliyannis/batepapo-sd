@@ -10,10 +10,10 @@ import javax.ws.rs.client.ClientBuilder;
 import org.apache.log4j.Logger;
 import org.apache.log4j.NDC;
 
-import br.com.upf.sd.resources.ApiUsuarios;
-import br.com.upf.sd.types.ConsultaUsuariosResponse;
-import br.com.upf.sd.types.Usuario;
-import br.com.upf.sd.utils.ResponseType;
+import br.com.ufp.sd.resources.ApiUsuarios;
+import br.com.ufp.sd.types.ConsultaUsuariosResponse;
+import br.com.ufp.sd.types.Usuario;
+import br.com.ufp.sd.utils.ResponseType;
 
 @WebService(name = "ApiSoap", 
 			serviceName = "ApiSoap", 

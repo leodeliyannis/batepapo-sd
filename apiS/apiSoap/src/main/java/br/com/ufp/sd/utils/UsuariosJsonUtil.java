@@ -1,4 +1,4 @@
-package br.com.upf.sd.utils;
+package br.com.ufp.sd.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import br.com.upf.sd.types.Usuario;
+import br.com.ufp.sd.types.Usuario;
 
 public class UsuariosJsonUtil {
 
