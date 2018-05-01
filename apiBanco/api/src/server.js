@@ -40,7 +40,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.post('/usuarios', graphqlHTTP({
+app.use('/usuarios', graphqlHTTP({
     schema: apiSchemaUsuarios,
     rootValue: apiResolversUsuarios,
     graphiql: true,

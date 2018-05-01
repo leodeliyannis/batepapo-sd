@@ -9,7 +9,7 @@ const apiResolversUsuario = {
       throw new Error('Erro ao recuperar os usuários do Banco de Dados')
     }
 
-    return projects
+    return usuario
   },
 
   createUsuario: ({input}) => {
