@@ -18,6 +18,16 @@ public class UsuariosJsonUtil {
 	}
 	
 	/** Consulta **/
+	public static JSONObject montaJsonDeConsultaDosUsuarios() {
+		/** {getUsuarios {_id Nome IPaddres Configuracao{usuario dt_criacao Atualizacoes{usuario dt_atualizacao}}} **/
+		JSONObject consulta = new JSONObject();
+		
+		consulta.put("getUsuarios", "_id Nome IPaddres");
+		
+		return consulta;
+	
+	}
+	
 	public static List<Usuario> montaDadosDosUsuariosRetornados(Response apiResponse) {
 		JSONArray jsonRetorno = new JSONArray(apiResponse.readEntity(String.class));
 
@@ -45,12 +55,18 @@ public class UsuariosJsonUtil {
 	
 	/** Criação **/
 	public static JSONObject montaJsonDeCriacaoDoUsuario(Usuario request) {
+		/** mutation{createUsuario (input: {Nome IPaddres}) {cdRetorno dsRetorno}} **/
+		JSONObject mutation = new JSONObject();
 		JSONObject usuario = new JSONObject();
+		JSONObject param = new JSONObject();
 		
-		usuario.put("Nome", request.getNome());
-		usuario.put("IPaddres", request.getNome());
+		param.put("Nome", request.getNome());
+		param.put("IPaddres", request.getNome());
 		
-		return usuario;
+		usuario.put("createUsuario", "(input: "+param+") {cdRetorno dsRetorno}" );
+		mutation.put("mutation", usuario);
+		
+		return mutation;
 	
 	}
 	
@@ -62,12 +78,19 @@ public class UsuariosJsonUtil {
 	
 	/** Atualização **/
 	public static JSONObject montaJsonDeAtualizacaoDoUsuario(Usuario request) {
+		/** mutation{updateUsuario (input: {_id Nome IPaddres}) {cdRetorno dsRetorno}} **/
+		JSONObject mutation = new JSONObject();
 		JSONObject usuario = new JSONObject();
+		JSONObject param = new JSONObject();
 		
-		usuario.put("Nome", request.getNome());
-		usuario.put("IPaddres", request.getNome());
+		param.put("_id", request.getId());
+		param.put("Nome", request.getNome());
+		param.put("IPaddres", request.getNome());
 		
-		return usuario;
+		usuario.put("updateUsuario", "(input: "+param+") {cdRetorno dsRetorno}" );
+		mutation.put("mutation", usuario);
+		
+		return mutation;
 	
 	}
 	
@@ -79,11 +102,17 @@ public class UsuariosJsonUtil {
 	
 	/** Delete **/
 	public static JSONObject montaJsonDeDeleteDoUsuario(String id) {
+		/** mutation{deleteUsuario (input: {_id}) {cdRetorno dsRetorno}} **/
+		JSONObject mutation = new JSONObject();
 		JSONObject usuario = new JSONObject();
+		JSONObject param = new JSONObject();
 		
-		usuario.put("_id", id);
+		param.put("_id", id);
 		
-		return usuario;
+		usuario.put("deleteUsuario", "(input: "+param+") {cdRetorno dsRetorno}" );
+		mutation.put("mutation", usuario);
+		
+		return mutation;
 	
 	}
 	

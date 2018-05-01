@@ -40,7 +40,11 @@ public class ApiUsuarios {
 			WebTarget endpoint = client.target(BASE_URL).path("/usuarios");
 			logger.info("consultaTodosOsUsuarios - endpoint: " + endpoint);
 
-			apiResponse = endpoint.request().accept(MediaType.APPLICATION_JSON).get();
+			JSONObject usuarioJson = UsuariosJsonUtil.montaJsonDeConsultaDosUsuarios();
+			logger.info("consultaTodosOsUsuarios - json envio: " + usuarioJson.toString());
+
+			apiResponse = endpoint.request().accept(MediaType.APPLICATION_JSON)
+					.post(Entity.json(usuarioJson.toString()));
 
 			ResponseUtil.throwApiExceptionIfAny(apiResponse);
 
