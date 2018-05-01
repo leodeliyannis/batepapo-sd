@@ -40,16 +40,14 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.post('/usuarios', graphqlHTTP({
+app.use('/usuarios', graphqlHTTP({
     schema: apiSchemaUsuarios,
     rootValue: apiResolversUsuarios,
     graphiql: true,
 }))
 
-app.get('/test', function(req, res){
-  res.send(200);
-});
+app.get('/favicon.ico', (req, res) => res.sendStatus(204));
 
-app.listen(process.env.PORT || 4000, () => {
-    console.log('conectado a porta 4000');
-});
+const PORT = 4000;
+app.listen(PORT);
+console.log(`Running on port ${PORT}`);

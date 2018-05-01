@@ -3,6 +3,14 @@
 ### Sobre:
 ApiBanco desenvolvida em NodeJS, é responsável por fazer todas as operações no banco(MongoDB), criado com o objetivo de centralizar a logica crud.
 
+A ideia é criar uma api unica e padronizada para solicitações ao banco de dados, utilizando como ponto forte uma biblioteca que chamam de evolução do rest, o GraphQL é uma linguagem de consulta, criada pelo Facebook com o objetivo de criar aplicativos clientes baseados em sintaxe intuitiva e flexível, para descrever seus requisitos e interações de dados.
+
+Um dos principais desafios das chamadas REST tradicionais é a incapacidade do cliente de solicitar um conjunto de dados personalizado (limitado ou expandido). Na maioria dos casos, quando o cliente solicita informações do servidor, ele recebe todos ou nenhum dos campos.
+
+Outra dificuldade é trabalhar e manter vários pontos de extremidade. Como uma plataforma cresce, consequentemente o número aumentará. Portanto, os clientes geralmente precisam solicitar dados de diferentes endpoints.
+
+Ao construir um servidor GraphQL, é necessário apenas ter um URL para todos os dados buscando e sofrendo mutação. Assim, um cliente pode solicitar um conjunto de dados enviando uma string de consulta, descrevendo o que deseja, para um servidor.
+
 Note que todos os pontos serão executados em container docker, dito isso não o citarei novamente.
 
 ### Origem das requisições:

@@ -6,13 +6,13 @@ const apiSchemaUsuarioMutation = `
   }
 
   input inUpdateUsuario {
-    _id: Stirng!
+    _id: String!
     Nome: String
     IPaddres: String
   }
 
   input inDeleteUsuario {
-    _id: Stirng!
+    _id: String!
   }
 
 

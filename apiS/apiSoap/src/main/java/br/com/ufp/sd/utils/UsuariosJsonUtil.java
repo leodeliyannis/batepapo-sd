@@ -5,13 +5,14 @@ import java.util.List;
 
 import javax.ws.rs.core.Response;
 
-import org.json.JSONArray;
-import org.json.JSONException;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import br.com.ufp.sd.types.Usuario;
 
 public class UsuariosJsonUtil {
+	
+	private static Logger logger = Logger.getLogger(UsuariosJsonUtil.class);
 
 	private UsuariosJsonUtil() {
 
@@ -20,21 +21,23 @@ public class UsuariosJsonUtil {
 	/** Consulta **/
 	public static JSONObject montaJsonDeConsultaDosUsuarios() {
 		/** {getUsuarios {_id Nome IPaddres Configuracao{usuario dt_criacao Atualizacoes{usuario dt_atualizacao}}} **/
-		JSONObject consulta = new JSONObject();
+		JSONObject jsonObj = new JSONObject(); 
 		
-		consulta.put("getUsuarios", "_id Nome IPaddres");
+		jsonObj.put("query", "{getUsuarios {_id Nome IPaddres}}");
 		
-		return consulta;
+		return jsonObj;
 	
 	}
 	
 	public static List<Usuario> montaDadosDosUsuariosRetornados(Response apiResponse) {
-		JSONArray jsonRetorno = new JSONArray(apiResponse.readEntity(String.class));
+		JSONObject jsonRetorno = new JSONObject(apiResponse.readEntity(String.class));
+		
+		logger.info("getUsuarios - json response: " + jsonRetorno);		
 
 		List<Usuario> usuarios = new ArrayList<Usuario>();
 		
-		for (int i = 0; i < jsonRetorno.length(); i++) {
-			JSONObject jsonUsuario = jsonRetorno.getJSONObject(i);
+		for (int i = 0; i < jsonRetorno.getJSONObject("data").getJSONArray("getUsuarios").length(); ++i) {
+			JSONObject jsonUsuario = jsonRetorno.getJSONObject("data").getJSONArray("getUsuarios").getJSONObject(i);
 			Usuario usuario = montaUsuario(jsonUsuario);
 			usuarios.add(usuario);
 		}
@@ -44,10 +47,10 @@ public class UsuariosJsonUtil {
 	
 	private static Usuario montaUsuario(JSONObject jsonRetorno) {
 		Usuario user = new Usuario();
-		
-		user.setId(jsonNvl(jsonRetorno, "_id"));
-		user.setNome(jsonNvl(jsonRetorno, "Nome"));
-		user.setIPaddres(jsonNvl(jsonRetorno, "IPaddres"));
+
+		user.setId(jsonRetorno.getString("_id"));
+		user.setNome(jsonRetorno.getString("Nome"));
+		user.setIPaddres(jsonRetorno.getString("IPaddres"));
 		
 		return user;
 	
@@ -56,84 +59,85 @@ public class UsuariosJsonUtil {
 	/** Criação **/
 	public static JSONObject montaJsonDeCriacaoDoUsuario(Usuario request) {
 		/** mutation{createUsuario (input: {Nome IPaddres}) {cdRetorno dsRetorno}} **/
-		JSONObject mutation = new JSONObject();
-		JSONObject usuario = new JSONObject();
 		JSONObject param = new JSONObject();
 		
-		param.put("Nome", request.getNome());
-		param.put("IPaddres", request.getNome());
+		param.put("query", "mutation{" +
+			       "createUsuario(input: {Nome: \""+request.getNome()+"\", IPaddres: \""+ request.getIPaddres()+"\" }){cdRetorno dsRetorno}" +
+		       "}");
 		
-		usuario.put("createUsuario", "(input: "+param+") {cdRetorno dsRetorno}" );
-		mutation.put("mutation", usuario);
-		
-		return mutation;
+		return param;
 	
 	}
 	
 	public static ResponseType montaDadosRetornoUsuarioCriado(Response apiResponse) {
 		JSONObject jsonRetorno = new JSONObject(apiResponse.readEntity(String.class));
 		
-		return montaRetorno(jsonRetorno);
+		logger.info("criaUsuario - json response: " + jsonRetorno);
+		
+		return montaRetorno(jsonRetorno, "createUsuario");
 	}
 	
 	/** Atualização **/
 	public static JSONObject montaJsonDeAtualizacaoDoUsuario(Usuario request) {
 		/** mutation{updateUsuario (input: {_id Nome IPaddres}) {cdRetorno dsRetorno}} **/
-		JSONObject mutation = new JSONObject();
-		JSONObject usuario = new JSONObject();
 		JSONObject param = new JSONObject();
+		String dados = "";
 		
-		param.put("_id", request.getId());
-		param.put("Nome", request.getNome());
-		param.put("IPaddres", request.getNome());
+		if(request.getNome() != null && !request.getNome().isEmpty()) {
+			dados+= ", Nome: \""+request.getNome()+"\"";
+		}if(request.getIPaddres() != null && !request.getIPaddres().isEmpty()) {
+			dados+= ", IPaddres: \""+request.getIPaddres()+"\"";
+		}
 		
-		usuario.put("updateUsuario", "(input: "+param+") {cdRetorno dsRetorno}" );
-		mutation.put("mutation", usuario);
+		param.put("query", "mutation{" +
+			       "updateUsuario(input: {_id: \""+request.getId()+"\" "+dados+"}){cdRetorno dsRetorno}" +
+		       "}");
 		
-		return mutation;
+		return param;
 	
 	}
 	
 	public static ResponseType montaDadosRetornoUsuarioAtualizado(Response apiResponse) {
 		JSONObject jsonRetorno = new JSONObject(apiResponse.readEntity(String.class));
 		
-		return montaRetorno(jsonRetorno);
+		logger.info("atualizaUsuario - json response: " + jsonRetorno);
+		
+		return montaRetorno(jsonRetorno, "updateUsuario");
 	}
 	
 	/** Delete **/
 	public static JSONObject montaJsonDeDeleteDoUsuario(String id) {
 		/** mutation{deleteUsuario (input: {_id}) {cdRetorno dsRetorno}} **/
-		JSONObject mutation = new JSONObject();
-		JSONObject usuario = new JSONObject();
 		JSONObject param = new JSONObject();
+
+		param.put("query", "mutation{" +
+					"deleteUsuario (input: {_id: \""+id+"\" }) {cdRetorno dsRetorno}" +
+				  "}");
 		
-		param.put("_id", id);
-		
-		usuario.put("deleteUsuario", "(input: "+param+") {cdRetorno dsRetorno}" );
-		mutation.put("mutation", usuario);
-		
-		return mutation;
+		return param;
 	
 	}
 	
 	public static ResponseType montaDadosRetornoUsuarioDeletado(Response apiResponse) {
 		JSONObject jsonRetorno = new JSONObject(apiResponse.readEntity(String.class));
 		
-		return montaRetorno(jsonRetorno);
+		logger.info("deletaUsuario - json response: " + jsonRetorno);
+		
+		return montaRetorno(jsonRetorno, "deleteUsuario");
 	}
 	
 	/** Metodo para todos os reponses de mutation **/
-	private static ResponseType montaRetorno(JSONObject jsonRetorno) {
+	private static ResponseType montaRetorno(JSONObject jsonRetorno, String metodo) {		
 		ResponseType resp = new ResponseType();
 		
-		resp.setCdRetorno(Integer.parseInt(jsonNvl(jsonRetorno, "cdRetorno")));
-		resp.setDsRetorno(jsonNvl(jsonRetorno, "dsRetorno"));
+		resp.setCdRetorno(jsonRetorno.getJSONObject("data").getJSONObject(metodo).getInt("cdRetorno"));
+		resp.setDsRetorno(jsonRetorno.getJSONObject("data").getJSONObject(metodo).getString("dsRetorno"));
 		
 		return resp;
 	
 	}
 	
-	private static String jsonNvl(JSONObject obj, String attr) {
+	/*private static String jsonNvl(JSONObject obj, String attr) {
 		if (obj.has(attr)) {
 			try {
 				return obj.getString(attr);
@@ -143,7 +147,5 @@ public class UsuariosJsonUtil {
 		} else {
 			return "";
 		}
-	}
-
-
+	}*/
 }

@@ -16,9 +16,9 @@ const apiResolversUsuario = {
 
     create = {}
 
-    create["Nome"]=input.nome;
+    create["Nome"]=input.Nome;
     create["IPaddres"]=input.IPaddres;
-    create["Configuracao"]={usuario: input.usuario};
+    create["Configuracao"]={usuario: "Teste"};
 
     let uModel = new usuarioModel(create);
     let newUsuarioInDB = uModel.save();
@@ -34,8 +34,8 @@ const apiResolversUsuario = {
 
     var update={};
 
-    if(input.nome){
-      update["Nome"]=input.nome;
+    if(input.Nome){
+      update["Nome"]=input.Nome;
     }if(input.IPaddres){
       update["IPaddres"]=input.IPaddres;
     }

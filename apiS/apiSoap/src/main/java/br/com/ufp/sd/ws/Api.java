@@ -34,16 +34,15 @@ public class Api {
 		ConsultaUsuariosResponse response = new ConsultaUsuariosResponse();
 		
 		try {
-			NDC.push("[Inicio - consultarUsuarios]");
-			logger.info("Inicio - consultarUsuarios");
+			//NDC.push("[Inicio]");
+			logger.info("Inicio");
 			
 			ApiUsuarios api = new ApiUsuarios(restClient, baseUri);
 			response = api.consultaUsuarios();
 			
-			logger.info("consultarUsuarios - cod. retorno: " + response.getCdRetorno());
-			logger.info("consultarUsuarios - desc. retorno: " + response.getDsRetorno());
-			logger.info("fim - consultarUsuarios - response: " + response);
-			
+			logger.info("cod. retorno: " + response.getCdRetorno());
+			logger.info("desc. retorno: " + response.getDsRetorno());
+			logger.info("fim");
 		} catch (Exception e) {
 			logger.error("Exception: " + e.getMessage(), e);
 			response.setCdRetorno(ResponseType.STATUS_COD_EXPTION);
@@ -63,16 +62,16 @@ public class Api {
 		ResponseType response = new ResponseType();
 		
 		try {
-			NDC.push("[Inicio - criaUsuario]");
-			logger.info("Inicio - criaUsuario");
+			//NDC.push("[Inicio]");
+			logger.info("Inicio");
 			
 			ApiUsuarios api = new ApiUsuarios(restClient, baseUri);
 			response = api.criaUsuario(request);
 			
-			logger.info("criaUsuario - cod. retorno: " + response.getCdRetorno());
-			logger.info("criaUsuario - desc. retorno: " + response.getDsRetorno());
-			logger.info("fim - criaUsuario - response: " + response);
-			
+			logger.info("cod. retorno: " + response.getCdRetorno());
+			logger.info("desc. retorno: " + response.getDsRetorno());
+			logger.info("response: " + response);
+			logger.info("fim");
 		} catch (Exception e) {
 			logger.error("Exception: " + e.getMessage(), e);
 			response.setCdRetorno(ResponseType.STATUS_COD_EXPTION);
@@ -92,16 +91,16 @@ public class Api {
 		ResponseType response = new ResponseType();
 		
 		try {
-			NDC.push("[Inicio - atualizaUsuario]");
-			logger.info("Inicio - atualizaUsuario");
+			//NDC.push("[Inicio]");
+			logger.info("Inicio");
 			
 			ApiUsuarios api = new ApiUsuarios(restClient, baseUri);
 			response = api.atualizaUsuario(request);
 			
-			logger.info("atualizaUsuario - cod. retorno: " + response.getCdRetorno());
-			logger.info("atualizaUsuario - desc. retorno: " + response.getDsRetorno());
-			logger.info("fim - atualizaUsuario - response: " + response);
-			
+			logger.info("cod. retorno: " + response.getCdRetorno());
+			logger.info("desc. retorno: " + response.getDsRetorno());
+			logger.info("response: " + response);
+			logger.info("fim");
 		} catch (Exception e) {
 			logger.error("Exception: " + e.getMessage(), e);
 			response.setCdRetorno(ResponseType.STATUS_COD_EXPTION);
@@ -121,16 +120,16 @@ public class Api {
 		ResponseType response = new ResponseType();
 		
 		try {
-			NDC.push("[Inicio - deletaUsuario]");
-			logger.info("Inicio - deletaUsuario");
+			//NDC.push("[Inicio]");
+			logger.info("Inicio");
 			
 			ApiUsuarios api = new ApiUsuarios(restClient, baseUri);
 			response = api.deletaUsuario(id);
 			
-			logger.info("deletaUsuario - cod. retorno: " + response.getCdRetorno());
-			logger.info("deletaUsuario - desc. retorno: " + response.getDsRetorno());
-			logger.info("fim - deletaUsuario - response: " + response);
-			
+			logger.info("cod. retorno: " + response.getCdRetorno());
+			logger.info("desc. retorno: " + response.getDsRetorno());
+			logger.info("response: " + response);
+			logger.info("fim");
 		} catch (Exception e) {
 			logger.error("Exception: " + e.getMessage(), e);
 			response.setCdRetorno(ResponseType.STATUS_COD_EXPTION);
@@ -141,4 +140,19 @@ public class Api {
 		
 		return response;	
 	}
+	
+	/*public static void main(String[] args) {
+		Api api = new Api();
+//		Usuario user = new Usuario();
+		
+//		user.setId("5ae8b68b325fd9271859f576");
+//		user.setNome("Claudemir");
+//		user.setIPaddres("0.0.0.0");
+		
+		api.consultarUsuarios();
+//		api.criaUsuario(user);
+//		api.atualizaUsuario(user);
+//		api.deletaUsuario("5ae8b68b325fd9271859f576");
+
+	}*/
 }
