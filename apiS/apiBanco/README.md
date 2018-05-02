@@ -53,7 +53,7 @@ Note que todos os pontos serão executados em container docker, dito isso não o
 
 - getUsuarios - Retorna todos os usuários cadastrado.
 ```bash
-{getUsuarios {_id Nome IPaddres Configuracao{usuario dt_criacao Atualizacoes{usuario dt_atualizacao}}}
+query{getUsuarios {_id Nome IPaddres Configuracao{usuario dt_criacao Atualizacoes{usuario dt_atualizacao}}}
 ```
 
 - createUsuario - Cria novo usuário.
