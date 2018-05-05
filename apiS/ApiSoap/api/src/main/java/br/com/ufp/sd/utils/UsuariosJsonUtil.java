@@ -8,7 +8,8 @@ import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
-import br.com.ufp.sd.types.Usuario;
+import br.com.ufp.sd.types.UsuarioCreate;
+import br.com.ufp.sd.types.UsuarioUpdate;
 
 public class UsuariosJsonUtil {
 	
@@ -29,24 +30,24 @@ public class UsuariosJsonUtil {
 	
 	}
 	
-	public static List<Usuario> montaDadosDosUsuariosRetornados(Response apiResponse) {
+	public static List<UsuarioUpdate> montaDadosDosUsuariosRetornados(Response apiResponse) {
 		JSONObject jsonRetorno = new JSONObject(apiResponse.readEntity(String.class));
 		
 		logger.info("getUsuarios - json response: " + jsonRetorno);		
 
-		List<Usuario> usuarios = new ArrayList<Usuario>();
+		List<UsuarioUpdate> usuarios = new ArrayList<UsuarioUpdate>();
 		
 		for (int i = 0; i < jsonRetorno.getJSONObject("data").getJSONArray("getUsuarios").length(); ++i) {
 			JSONObject jsonUsuario = jsonRetorno.getJSONObject("data").getJSONArray("getUsuarios").getJSONObject(i);
-			Usuario usuario = montaUsuario(jsonUsuario);
+			UsuarioUpdate usuario = montaUsuario(jsonUsuario);
 			usuarios.add(usuario);
 		}
 
 		return usuarios;
 	}
 	
-	private static Usuario montaUsuario(JSONObject jsonRetorno) {
-		Usuario user = new Usuario();
+	private static UsuarioUpdate montaUsuario(JSONObject jsonRetorno) {
+		UsuarioUpdate user = new UsuarioUpdate();
 
 		user.setId(jsonRetorno.getString("_id"));
 		user.setNome(jsonRetorno.getString("Nome"));
@@ -57,7 +58,7 @@ public class UsuariosJsonUtil {
 	}
 	
 	/** Criação **/
-	public static JSONObject montaJsonDeCriacaoDoUsuario(Usuario request) {
+	public static JSONObject montaJsonDeCriacaoDoUsuario(UsuarioCreate request) {
 		/** mutation{createUsuario (input: {Nome IPaddres}) {cdRetorno dsRetorno}} **/
 		JSONObject param = new JSONObject();
 		
@@ -78,7 +79,7 @@ public class UsuariosJsonUtil {
 	}
 	
 	/** Atualização **/
-	public static JSONObject montaJsonDeAtualizacaoDoUsuario(Usuario request) {
+	public static JSONObject montaJsonDeAtualizacaoDoUsuario(UsuarioUpdate request) {
 		/** mutation{updateUsuario (input: {_id Nome IPaddres}) {cdRetorno dsRetorno}} **/
 		JSONObject param = new JSONObject();
 		String dados = "";

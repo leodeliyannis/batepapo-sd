@@ -12,7 +12,8 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import br.com.ufp.sd.types.ConsultaUsuariosResponse;
-import br.com.ufp.sd.types.Usuario;
+import br.com.ufp.sd.types.UsuarioCreate;
+import br.com.ufp.sd.types.UsuarioUpdate;
 import br.com.ufp.sd.utils.ResponseType;
 import br.com.ufp.sd.utils.ResponseUtil;
 import br.com.ufp.sd.utils.UsuariosJsonUtil;
@@ -48,11 +49,11 @@ public class ApiUsuarios {
 
 			ResponseUtil.throwApiExceptionIfAny(apiResponse);
 
-			List<Usuario> usuarios = UsuariosJsonUtil.montaDadosDosUsuariosRetornados(apiResponse);
+			List<UsuarioUpdate> usuarios = UsuariosJsonUtil.montaDadosDosUsuariosRetornados(apiResponse);
 			resposta.getUsuarios().addAll(usuarios);
 			
 			//logger.info("consultaTodosOsUsuarios - retorno api headers: " + apiResponse.getStringHeaders());
-			for(Usuario user: usuarios) {
+			for(UsuarioUpdate user: usuarios) {
 				logger.info("retorno - id: " + user.getId() + " usuario: " +user.getNome());
 			}
 
@@ -64,7 +65,7 @@ public class ApiUsuarios {
 		}
 	}
 	
-	public ResponseType criaUsuario(Usuario request) throws Exception {
+	public ResponseType criaUsuario(UsuarioCreate request) throws Exception {
 		Response apiResponse = null;
 
 		try {
@@ -91,7 +92,7 @@ public class ApiUsuarios {
 		}
 	}
 	
-	public ResponseType atualizaUsuario(Usuario request) throws Exception {
+	public ResponseType atualizaUsuario(UsuarioUpdate request) throws Exception {
 		Response apiResponse = null;
 
 		try {

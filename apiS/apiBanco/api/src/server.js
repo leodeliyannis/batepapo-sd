@@ -46,7 +46,18 @@ app.use('/usuarios', graphqlHTTP({
     graphiql: true,
 }))
 
+app.get('/test', function(req, res){
+  res.sendStatus(200);
+});
+
 app.get('/favicon.ico', (req, res) => res.sendStatus(204));
+
+//Garantir que as filas de banco estejam limpas antes de fechar
+app.on('SIGINT', function() {
+   db.stop(function(err) {
+     app.exit(err ? 1 : 0);
+   });
+});
 
 const PORT = 4000;
 app.listen(PORT);

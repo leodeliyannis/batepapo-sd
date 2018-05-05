@@ -12,18 +12,19 @@ import org.apache.log4j.NDC;
 
 import br.com.ufp.sd.resources.ApiUsuarios;
 import br.com.ufp.sd.types.ConsultaUsuariosResponse;
-import br.com.ufp.sd.types.Usuario;
+import br.com.ufp.sd.types.UsuarioCreate;
+import br.com.ufp.sd.types.UsuarioUpdate;
 import br.com.ufp.sd.utils.ResponseType;
 
 @WebService(name = "ApiSoap", 
 			serviceName = "ApiSoap", 
 			portName = "ApiSoapPort", 
 			targetNamespace = "http://br.com.upf.sd/ApiSoap")
-public class Api {
+public class ApiSoap {
 	
-	private final String baseUri = "http://127.0.0.1:4000";
+	private final String baseUri = "http://loadbalancer-sd";
 	
-	private Logger logger = Logger.getLogger(Api.class);
+	private Logger logger = Logger.getLogger(ApiSoap.class);
 	
 	private Client restClient = ClientBuilder.newClient();
 	
@@ -57,7 +58,7 @@ public class Api {
 	@WebMethod(action = "criaUsuario", operationName = "criaUsuario")
 	@WebResult(name = "criaUsuarioResponse")
 	public ResponseType criaUsuario(
-			@WebParam(name = "criaUsuarioRequest") Usuario request){
+			@WebParam(name = "criaUsuarioRequest") UsuarioCreate request){
 		
 		ResponseType response = new ResponseType();
 		
@@ -86,7 +87,7 @@ public class Api {
 	@WebMethod(action = "atualizaUsuario", operationName = "atualizaUsuario")
 	@WebResult(name = "atualizaUsuarioResponse")
 	public ResponseType atualizaUsuario(
-			@WebParam(name = "atualizaUsuarioRequest") Usuario request){
+			@WebParam(name = "atualizaUsuarioRequest") UsuarioUpdate request){
 		
 		ResponseType response = new ResponseType();
 		

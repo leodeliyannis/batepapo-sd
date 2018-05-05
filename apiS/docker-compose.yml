@@ -2,19 +2,35 @@ version: "3"
 services:
     portainer:
         image: portainer/portainer
-        container_name: "portainer-api"
+        container_name: "portainer-sd"
         command: -H unix:///var/run/docker.sock
         ports:
             - "9000:9000"
         volumes:
           - /var/run/docker.sock:/var/run/docker.sock
           - portainer_data:/data
-    api-node1:
-        build: ./api
-        image: apiBanco
-        container_name: "node1"
+    tomcat:
+        build: ./ApiSoap
+        image: apisoap
+        links:
+          - loadbalancer-sd
+        ports:
+          - "8080:8080"
+    loadbalancer-sd:
+        build: ./ApiBanco/nginx
+        image: "loadbalancer-sd"
+        container_name: "loadbalancer-sd"
+        links:
+            - apiBanco-node1
+            - apiBanco-node2
+        ports:
+            - "80:80"
+    apiBanco-node1:
+        build: ./ApiBanco/api
+        image: apibanco
+        container_name: "apiBanco-node1"
         environment:
-            - MESSAGE=node1
+            - MESSAGE=apiBanco-node1
         ports:
             - "4000"
         links:
@@ -30,20 +46,20 @@ services:
                 max_attempts: 3
                 window: 120s
         healthcheck:
-            test: curl -f http://172.18.0.5:4000/test || exit 1
+            test: curl -f http://172.19.0.4:4000/test || exit 1
             interval: 40s
             timeout: 20s
             retries: 3
-    api-node2:
-        build: ./api
-        image: apiBanco
-        container_name: "node2"
+    apiBanco-node2:
+        build: ./ApiBanco/api
+        image: apibanco
+        container_name: "apiBanco-node2"
         environment:
-            - MESSAGE=node2
+            - MESSAGE=apiBanco-node2
         ports:
             - "4000"
         links:
-             - mongo
+            - mongo
         deploy:
             replicas: 2
             update_config:
@@ -55,7 +71,7 @@ services:
                 max_attempts: 3
                 window: 120s
         healthcheck:
-            test: curl -f http://172.18.0.4:4000/test || exit 1
+            test: curl -f http://172.19.0.5:4000/test || exit 1
             interval: 40s
             timeout: 20s
             retries: 3
@@ -65,14 +81,5 @@ services:
              - /data/mongodb/db:/data/db
         ports:
              - "27017:27017"
-    loadbalancer:
-        build: ./nginx
-        image: "apiLoadbalancer"
-        container_name: "loadbalancer"
-        links:
-            - api-node1
-            - api-node2
-        ports:
-            - "80:80"
 volumes:
     portainer_data:

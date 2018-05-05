@@ -18,13 +18,13 @@ public class ConsultaUsuariosResponse extends ResponseType{
 	
 	@XmlElement(required = true, name = "usuarios")
 	@XmlElementWrapper(name = "usuariosCollection")
-	private List<Usuario> usuarios = new ArrayList<Usuario>();
+	private List<UsuarioUpdate> usuarios = new ArrayList<UsuarioUpdate>();
 
-	public List<Usuario> getUsuarios() {
+	public List<UsuarioUpdate> getUsuarios() {
 		return usuarios;
 	}
 
-	public void setUsuarios(List<Usuario> usuarios) {
+	public void setUsuarios(List<UsuarioUpdate> usuarios) {
 		this.usuarios = usuarios;
 	}
 

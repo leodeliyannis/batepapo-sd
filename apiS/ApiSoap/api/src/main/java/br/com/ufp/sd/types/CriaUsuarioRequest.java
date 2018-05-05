@@ -11,13 +11,13 @@ import javax.xml.bind.annotation.XmlType;
 public class CriaUsuarioRequest {
 	
 	@XmlElement(required = true, name = "usuario")
-	Usuario usuario = new Usuario();
+	UsuarioUpdate usuario = new UsuarioUpdate();
 
-	public Usuario getUsuario() {
+	public UsuarioUpdate getUsuario() {
 		return usuario;
 	}
 
-	public void setUsuario(Usuario usuario) {
+	public void setUsuario(UsuarioUpdate usuario) {
 		this.usuario = usuario;
 	}
 
