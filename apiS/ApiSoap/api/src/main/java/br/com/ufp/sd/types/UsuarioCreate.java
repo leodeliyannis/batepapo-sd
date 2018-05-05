@@ -5,15 +5,18 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+import br.com.ufp.sd.utils.JaxbValidator;
+import br.com.ufp.sd.utils.ValidationException;
+
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "UsuarioCreateServiceResponse", 
 		 namespace = "http://br.com.upf.sd/ApiSoap")
 public class UsuarioCreate {
 	
 	@XmlElement(required = true)
-	String Nome;
+	private String Nome;
 	@XmlElement(required = true)
-	String IPaddres;
+	private String IPaddres;
 	
 	public String getNome() {
 		return Nome;
@@ -26,6 +29,12 @@ public class UsuarioCreate {
 	}
 	public void setIPaddres(String iPaddres) {
 		IPaddres = iPaddres;
+	}
+	
+	public void validateFields() throws ValidationException {
+		// Bloco generico que realiza a validação a partir das annotations
+		JaxbValidator.validateRequired(this,
+				UsuarioCreate.class);
 	}
 	
 	@Override
@@ -45,7 +54,7 @@ public class UsuarioCreate {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		UsuarioUpdate other = (UsuarioUpdate) obj;
+		UsuarioCreate other = (UsuarioCreate) obj;
 		if (IPaddres == null) {
 			if (other.IPaddres != null)
 				return false;
@@ -56,7 +65,6 @@ public class UsuarioCreate {
 				return false;
 		} else if (!Nome.equals(other.Nome))
 			return false;
-
 		return true;
 	}
 	

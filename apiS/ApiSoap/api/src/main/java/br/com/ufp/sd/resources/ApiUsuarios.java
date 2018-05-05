@@ -11,12 +11,13 @@ import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
+import br.com.ufp.sd.querys.UsuariosJsonUtil;
 import br.com.ufp.sd.types.ConsultaUsuariosResponse;
 import br.com.ufp.sd.types.UsuarioCreate;
+import br.com.ufp.sd.types.UsuarioDelete;
 import br.com.ufp.sd.types.UsuarioUpdate;
 import br.com.ufp.sd.utils.ResponseType;
 import br.com.ufp.sd.utils.ResponseUtil;
-import br.com.ufp.sd.utils.UsuariosJsonUtil;
 
 public class ApiUsuarios {
 	
@@ -119,16 +120,16 @@ public class ApiUsuarios {
 		}
 	}
 	
-	public ResponseType deletaUsuario(String id) throws Exception {
+	public ResponseType deletaUsuario(UsuarioDelete request) throws Exception {
 		Response apiResponse = null;
 
 		try {
 			WebTarget endpoint = client.target(BASE_URL).path("/usuarios");
 			logger.info("endpoint: " + endpoint);
 
-			JSONObject usuarioJson = UsuariosJsonUtil.montaJsonDeDeleteDoUsuario(id);
+			JSONObject usuarioJson = UsuariosJsonUtil.montaJsonDeDeleteDoUsuario(request);
 			logger.info("json envio: " + usuarioJson.toString());
-
+			
 			apiResponse = endpoint.request().accept(MediaType.APPLICATION_JSON)
 					.post(Entity.json(usuarioJson.toString()));
 
@@ -136,7 +137,7 @@ public class ApiUsuarios {
 
 			ResponseType response = UsuariosJsonUtil.montaDadosRetornoUsuarioDeletado(apiResponse);
 			//logger.info("deletaUsuario - retorno api headers: " + apiResponse.getStringHeaders());
-			logger.info("retorno api: " + response);
+			logger.info("retorno api: " + response.getDsRetorno());
 
 			return response;
 		} finally {

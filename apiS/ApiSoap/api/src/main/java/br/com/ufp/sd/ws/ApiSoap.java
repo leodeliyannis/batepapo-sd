@@ -13,6 +13,7 @@ import org.apache.log4j.NDC;
 import br.com.ufp.sd.resources.ApiUsuarios;
 import br.com.ufp.sd.types.ConsultaUsuariosResponse;
 import br.com.ufp.sd.types.UsuarioCreate;
+import br.com.ufp.sd.types.UsuarioDelete;
 import br.com.ufp.sd.types.UsuarioUpdate;
 import br.com.ufp.sd.utils.ResponseType;
 
@@ -65,6 +66,9 @@ public class ApiSoap {
 		try {
 			//NDC.push("[Inicio]");
 			logger.info("Inicio");
+			logger.info("Request: "+request);
+			
+			request.validateFields();
 			
 			ApiUsuarios api = new ApiUsuarios(restClient, baseUri);
 			response = api.criaUsuario(request);
@@ -94,6 +98,9 @@ public class ApiSoap {
 		try {
 			//NDC.push("[Inicio]");
 			logger.info("Inicio");
+			logger.info("Request: "+request);
+			
+			request.validateFields();
 			
 			ApiUsuarios api = new ApiUsuarios(restClient, baseUri);
 			response = api.atualizaUsuario(request);
@@ -116,16 +123,19 @@ public class ApiSoap {
 	@WebMethod(action = "deletaUsuario", operationName = "deletaUsuario")
 	@WebResult(name = "deletaUsuarioResponse")
 	public ResponseType deletaUsuario(
-			@WebParam(name = "deletaUsuarioRequest") String id){
+			@WebParam(name = "deletaUsuarioRequest") UsuarioDelete request){
 		
 		ResponseType response = new ResponseType();
 		
 		try {
 			//NDC.push("[Inicio]");
 			logger.info("Inicio");
+			logger.info("Request: "+request);
+			
+			request.validateFields();
 			
 			ApiUsuarios api = new ApiUsuarios(restClient, baseUri);
-			response = api.deletaUsuario(id);
+			response = api.deletaUsuario(request);
 			
 			logger.info("cod. retorno: " + response.getCdRetorno());
 			logger.info("desc. retorno: " + response.getDsRetorno());
@@ -142,18 +152,26 @@ public class ApiSoap {
 		return response;	
 	}
 	
-	/*public static void main(String[] args) {
-		Api api = new Api();
-//		Usuario user = new Usuario();
+//	public static void main(String[] args) {
+//		ApiSoap api = new ApiSoap();
+//		UsuarioDelete user = new UsuarioDelete();
+//		UsuarioUpdate user = new UsuarioUpdate();
 		
 //		user.setId("5ae8b68b325fd9271859f576");
 //		user.setNome("Claudemir");
 //		user.setIPaddres("0.0.0.0");
 		
-		api.consultarUsuarios();
-//		api.criaUsuario(user);
+//		ConsultaUsuariosResponse userResp = api.consultarUsuarios();
+//		System.out.println(userResp.getDsRetorno());
+//		for(UsuarioUpdate u: userResp.getUsuarios()) {
+//			System.out.println(u.getNome());
+//		}
+//		user.setId("5aee3943f8d6110014ee0156");
+//		user.setNome("Teste");
+//		user.setIPaddres("Teste");
 //		api.atualizaUsuario(user);
-//		api.deletaUsuario("5ae8b68b325fd9271859f576");
+//		user.setId("5aee3825f8d6110014ee0155");
+//		api.deletaUsuario(user);
 
-	}*/
+//	}
 }
