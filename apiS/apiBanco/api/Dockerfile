@@ -1,11 +1,9 @@
-FROM keymetrics/pm2:latest-jessie
+FROM keymetrics/pm2:latest-slim
 
 RUN apt-get install -y curl
 
 # Node e npm mais recentes 
-RUN apt-get install -y build-essential libssl-dev
 RUN curl -sL https://deb.nodesource.com/setup_9.x | bash -
-RUN apt-get install -y nodejs
 
 # Bundle APP files
 COPY src src/
