@@ -4,12 +4,28 @@ var Schema = mongoose.Schema;
 var usuarioSchema = new Schema({
 
   Nome: String,
+  Senha: String,
   IPaddres: String,
-  Acesso: [{
+  Acessos: [{
     dataHora: {
       type: Date,
       default: Date.now
     }
+  }],
+  Topicos: [{
+    nome: String,
+    dataHora: {
+      type: Date,
+      default: Date.now
+    }
+  }],
+  Chats: [{
+    usuario2: String,
+    dataHora: {
+      type: Date,
+      default: Date.now
+    },
+    topico: String
   }],
   Configuracao: {
     usuario: String,
