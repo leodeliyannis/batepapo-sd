@@ -1,0 +1,25 @@
+{
+  "name": "apiBanco",
+  "version": "1.0.0",
+  "description": "Responsavel por todas as operações no banco de dados",
+  "main": "server.js",
+  "keywords": [
+    "API"
+  ],
+  "author": "Claudemir Simons",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "express-graphql": "^0.6.12",
+    "express-rate-limit": "^2.11.0",
+    "graphql": "^0.13.1",
+    "morgan": "^1.9.0",
+    "helmet": "^3.12.0",
+    "mongoose": "^5.0.9",
+    "pm2": "^2.10.2",
+    "url-join": "^4.0.0",
+    "jwt-simple": "^0.2.0",
+    "moment": "^2.22.1",
+    "utf8": "^3.0.0"
+  }
+}
