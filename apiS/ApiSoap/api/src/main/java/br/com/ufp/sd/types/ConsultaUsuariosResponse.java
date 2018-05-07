@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlType;
 import br.com.ufp.sd.utils.ResponseType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "getUsuariosServiceResponse", 
+@XmlType(name = "consultaUsuariosResponse", 
 		 namespace = "http://br.com.upf.sd/ApiSoap")
 public class ConsultaUsuariosResponse extends ResponseType{
 	

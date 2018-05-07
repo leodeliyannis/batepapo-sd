@@ -9,7 +9,7 @@ import br.com.ufp.sd.utils.JaxbValidator;
 import br.com.ufp.sd.utils.ValidationException;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "usuarioCreateServiceResponse", 
+@XmlType(name = "criaUsuarioRequest", 
 		 namespace = "http://br.com.upf.sd/ApiSoap")
 public class UsuarioCreate {
 	

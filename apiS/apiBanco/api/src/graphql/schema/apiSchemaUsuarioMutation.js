@@ -28,21 +28,26 @@ const apiSchemaUsuarioMutation = `
     token: String!
   }
 
-  input InRegistraAcesso {
+  input inRegistraAcesso {
     _id: String!
     token: String!
   }
 
-  input InRegistraPesquisa {
+  input inRegistraPesquisa {
     _id: String!
     topico: String!
     token: String!
   }
 
-  input InRegistraChat {
+  input inRegistraChat {
     _id: String!
     topico: String!
     usuario: String!
+    token: String!
+  }
+
+  input inUsuarioChatsIniciado {
+    nome: String!
     token: String!
   }
 
@@ -51,9 +56,9 @@ const apiSchemaUsuarioMutation = `
     updateUsuario(input: inUpdateUsuario): tyResponse
     deleteUsuario(input: inDeleteUsuario): tyResponse
 
-    registraAcesso  (input: inDeleteUsuario): tyResponse
-    registraPesquisa(input: inDeleteUsuario): tyResponse
-    registraChat    (input: inDeleteUsuario): tyResponse
+    registraAcesso  (input: inRegistraAcesso):   tyResponse
+    registraPesquisa(input: inRegistraPesquisa): tyResponse
+    registraChat    (input: inRegistraChat):     tyResponse
   }
 `
 module.exports = apiSchemaUsuarioMutation

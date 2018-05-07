@@ -47,9 +47,33 @@ const apiSchemaUsuarioQuery = `
     token: String
   }
 
+  type tyResponseEstatistica {
+  	cdRetorno: Int!
+  	dsRetorno: String!
+    valor: Int
+  }
+
+  type tyResponseTopicosPesquisa {
+    cdRetorno: Int!
+  	dsRetorno: String!
+    topicos: [tyTopicos]
+  }
+
+  type tyTopicos {
+  	topico: String
+    descricao: String
+    tipo: String
+    quantidade: Int
+  }
+
   type Query {
     getUsuarios(input: inToken): tyUsuario
-    login(input: inLogin): tyResponseLogin
+    login      (input: inLogin): tyResponseLogin
+
+    estatisticaQtdUserAcesso        (input: inToken): tyResponseEstatistica
+    estatisticaTopicosPesquisa      (input: inToken): tyResponseTopicosPesquisa
+    estatisticaQtdChatsIniciado     (input: inToken): tyResponseEstatistica
+    estatisticaUsuarioChatsIniciado (input: inUsuarioChatsIniciado): tyResponseEstatistica
   }
 `
 module.exports = apiSchemaUsuarioQuery

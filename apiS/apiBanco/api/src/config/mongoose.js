@@ -10,7 +10,7 @@ module.exports = function () {
     mongoose.connection.on('error', function (err) {
         console.log('Error: Não foi possível conectar-se ao MongoDB. Você se esqueceu de executar `mongod`?'.red);
     }).on('open', function () {
-        console.log('Conexão  estabelecida com MongoDB')
+        console.log('Conexão estabelecida com MongoDB')
     })
     return db;
 };

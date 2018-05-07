@@ -1,5 +1,6 @@
 package br.com.ufp.sd.querys;
 
+import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
 import javax.ws.rs.core.Response;
@@ -10,13 +11,13 @@ import org.json.JSONObject;
 import br.com.ufp.sd.types.AtualizaUsuarioRequest;
 import br.com.ufp.sd.types.ConsultaUsuarioRequest;
 import br.com.ufp.sd.types.ConsultaUsuariosResponse;
-import br.com.ufp.sd.types.CriaUsuarioRequest;
 import br.com.ufp.sd.types.DeletaUsuarioRequest;
 import br.com.ufp.sd.types.LoginRequest;
 import br.com.ufp.sd.types.LoginResponse;
 import br.com.ufp.sd.types.RegistraAcessoRequest;
 import br.com.ufp.sd.types.RegristraChatRequest;
 import br.com.ufp.sd.types.RegristraPesquisaRequest;
+import br.com.ufp.sd.types.UsuarioCreate;
 import br.com.ufp.sd.types.UsuarioUpdate;
 import br.com.ufp.sd.utils.ResponseType;
 import br.com.ufp.sd.utils.Security;
@@ -31,8 +32,9 @@ public class UsuariosJsonUtil {
 	 * 
 	 * return cdRetorno dsRetorno token
 	 * @throws NoSuchAlgorithmException
+	 * @throws UnsupportedEncodingException 
 	 */
-	public static JSONObject montaJsonDeLogin(LoginRequest request) throws NoSuchAlgorithmException {
+	public static JSONObject montaJsonDeLogin(LoginRequest request) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		JSONObject jsonObj = new JSONObject();
 		
 		String senha = Security.encrypt(request.getSenha());
@@ -92,14 +94,15 @@ public class UsuariosJsonUtil {
 	/** Criação 
 	 * 
 	 * return cdRetorno dsRetorno
-	 * @throws NoSuchAlgorithmException **/
-	public static JSONObject montaJsonDeCriacaoDoUsuario(CriaUsuarioRequest request) throws NoSuchAlgorithmException {
+	 * @throws NoSuchAlgorithmException 
+	 * @throws UnsupportedEncodingException **/
+	public static JSONObject montaJsonDeCriacaoDoUsuario(UsuarioCreate request) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		JSONObject param = new JSONObject();
 		
-		String senha = Security.encrypt(request.getUsuario().getSenha());
+		String senha = Security.encrypt(request.getSenha());
 		
 		param.put("query", "mutation{" +
-			       "createUsuario(input: {Nome: \""+request.getUsuario().getNome()+"\", Senha: \""+senha+"\", IPaddres: \""+ request.getUsuario().getIPaddres()+"\" }){cdRetorno dsRetorno}" +
+			       "createUsuario(input: {Nome: \""+request.getNome()+"\", Senha: \""+senha+"\", IPaddres: \""+ request.getIPaddres()+"\" }){cdRetorno dsRetorno}" +
 		       "}");
 		
 		return param;
@@ -183,7 +186,7 @@ public class UsuariosJsonUtil {
 
 		logger.info("registraAcesso - json response: " + jsonRetorno);		
 		
-		return montaRetorno(jsonRetorno, "deleteUsuario");
+		return montaRetorno(jsonRetorno, "registraAcesso");
 	}
 	
 	/** Registra Pesquisa  
@@ -205,7 +208,7 @@ public class UsuariosJsonUtil {
 
 		logger.info("registraPesquisa - json response: " + jsonRetorno);		
 		
-		return montaRetorno(jsonRetorno, "deleteUsuario");
+		return montaRetorno(jsonRetorno, "registraPesquisa");
 	}
 	
 	/** Registra Chat  
@@ -227,7 +230,7 @@ public class UsuariosJsonUtil {
 
 		logger.info("registraChat - json response: " + jsonRetorno);		
 		
-		return montaRetorno(jsonRetorno, "deleteUsuario");
+		return montaRetorno(jsonRetorno, "registraChat");
 	}
 	
 	/** Metodo para todos os reponses de mutation 

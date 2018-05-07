@@ -14,13 +14,13 @@ import br.com.ufp.sd.resources.ApiUsuarios;
 import br.com.ufp.sd.types.AtualizaUsuarioRequest;
 import br.com.ufp.sd.types.ConsultaUsuarioRequest;
 import br.com.ufp.sd.types.ConsultaUsuariosResponse;
-import br.com.ufp.sd.types.CriaUsuarioRequest;
 import br.com.ufp.sd.types.DeletaUsuarioRequest;
 import br.com.ufp.sd.types.LoginRequest;
 import br.com.ufp.sd.types.LoginResponse;
 import br.com.ufp.sd.types.RegistraAcessoRequest;
 import br.com.ufp.sd.types.RegristraChatRequest;
 import br.com.ufp.sd.types.RegristraPesquisaRequest;
+import br.com.ufp.sd.types.UsuarioCreate;
 import br.com.ufp.sd.utils.ResponseType;
 
 @WebService(name = "ApiSoap", 
@@ -102,7 +102,7 @@ public class ApiSoap {
 	@WebMethod(action = "criaUsuario", operationName = "criaUsuario")
 	@WebResult(name = "criaUsuarioResponse")
 	public ResponseType criaUsuario(
-			@WebParam(name = "criaUsuarioRequest") CriaUsuarioRequest request){
+			@WebParam(name = "criaUsuarioRequest") UsuarioCreate request){
 		
 		ResponseType response = new ResponseType();
 		
@@ -293,26 +293,56 @@ public class ApiSoap {
 	
 //	public static void main(String[] args) {
 //		ApiSoap api = new ApiSoap();
-//		UsuarioCreate cria = new UsuarioCreate();
-//		CriaUsuarioRequest user = new CriaUsuarioRequest();
 		
-//		cria.setNome("Claudemir");
+//		UsuarioCreate cria = new UsuarioCreate();
+//		cria.setNome("Claudemir1");
 //		cria.setSenha("teste");
 //		cria.setIPaddres("192.168.0.1");
-//		user.setUsuario(cria);
-//		api.criaUsuario(user);
+//		api.criaUsuario(cria);
 		
 //		LoginRequest login = new LoginRequest();
-//		login.setNome("Claudemir");
+//		login.setNome("Claudemir2");
 //		login.setSenha("teste");
 //		login.setIPaddres("192.168.0.1");
 //		api.login(login);
 		
 //		ConsultaUsuarioRequest consulta	= new ConsultaUsuarioRequest();
 //		Autenticacao aut = new Autenticacao();
-//		aut.setToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1YWVlNzMzODdhMTg0NDI3M2MzOWFmOWIiLCJleHAiOjE1MjU2NjMxNzM2ODN9.YqDh-Ehp7xdcDHl_Jjv5E148FWYti9aXLhX4Fz-Fifc");
+//		aut.setToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1YWVmNDhmYjY4NWI0MDBkNWM1MGEyYjAiLCJleHAiOjE1MjU3MTc2MzU4NDN9.PFIMq3NwEBYKuEQuAouiHoIB-y_nkXNZ3iv0Z8ARq7s");
 //		consulta.setAutenticacao(aut);
 //		api.consultarUsuarios(consulta);
-//
+		
+//		UsuarioDelete del = new UsuarioDelete();
+//		DeletaUsuarioRequest delReq = new DeletaUsuarioRequest();
+//		del.setId("5aef992d10c09f0014c17927");
+//		Autenticacao aut = new Autenticacao();
+//		aut.setToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1YWVmOTkyZDEwYzA5ZjAwMTRjMTc5MjciLCJleHAiOjE1MjU3MzgxNjE4MTR9.-_EUwgOdKnVcGx4i2rsPiSFPvsN1cAzUQxnbKNmFr-c");
+//		delReq.setUsuario(del);
+//		delReq.setAutenticacao(aut);
+//		api.deletaUsuario(delReq);
+		
+//		RegistraAcessoRequest raReq = new RegistraAcessoRequest();
+//		raReq.setId("5aef48fb685b400d5c50a2b0");
+//		Autenticacao aut = new Autenticacao();
+//		aut.setToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1YWVmNDhmYjY4NWI0MDBkNWM1MGEyYjAiLCJleHAiOjE1MjU3MTc2MzU4NDN9.PFIMq3NwEBYKuEQuAouiHoIB-y_nkXNZ3iv0Z8ARq7s");
+//		raReq.setAutenticacao(aut);
+//		api.regristraAcesso(raReq);
+		
+//		RegristraPesquisaRequest rpReq = new RegristraPesquisaRequest();
+//		rpReq.setId("5aef48fb685b400d5c50a2b0");
+//		rpReq.setTopico("Teste");
+//		Autenticacao aut = new Autenticacao();
+//		aut.setToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1YWVmNDhmYjY4NWI0MDBkNWM1MGEyYjAiLCJleHAiOjE1MjU3MTc2MzU4NDN9.PFIMq3NwEBYKuEQuAouiHoIB-y_nkXNZ3iv0Z8ARq7s");
+//		rpReq.setAutenticacao(aut);
+//		api.regristraPesquisa(rpReq);
+		
+//		RegristraChatRequest rcReq = new RegristraChatRequest();
+//		rcReq.setId("5aef48fb685b400d5c50a2b0");
+//		rcReq.setTopico("Teste2");
+//		rcReq.setUsuario("Fula de tal2");
+//		Autenticacao aut = new Autenticacao();
+//		aut.setToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1YWVmNDhmYjY4NWI0MDBkNWM1MGEyYjAiLCJleHAiOjE1MjU3MTc2MzU4NDN9.PFIMq3NwEBYKuEQuAouiHoIB-y_nkXNZ3iv0Z8ARq7s");
+//		rcReq.setAutenticacao(aut);
+//		api.regristraChat(rcReq);
 //	}
 }

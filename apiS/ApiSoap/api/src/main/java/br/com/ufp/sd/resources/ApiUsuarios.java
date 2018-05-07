@@ -13,13 +13,13 @@ import br.com.ufp.sd.querys.UsuariosJsonUtil;
 import br.com.ufp.sd.types.AtualizaUsuarioRequest;
 import br.com.ufp.sd.types.ConsultaUsuarioRequest;
 import br.com.ufp.sd.types.ConsultaUsuariosResponse;
-import br.com.ufp.sd.types.CriaUsuarioRequest;
 import br.com.ufp.sd.types.DeletaUsuarioRequest;
 import br.com.ufp.sd.types.LoginRequest;
 import br.com.ufp.sd.types.LoginResponse;
 import br.com.ufp.sd.types.RegistraAcessoRequest;
 import br.com.ufp.sd.types.RegristraChatRequest;
 import br.com.ufp.sd.types.RegristraPesquisaRequest;
+import br.com.ufp.sd.types.UsuarioCreate;
 import br.com.ufp.sd.utils.ResponseType;
 import br.com.ufp.sd.utils.ResponseUtil;
 
@@ -87,7 +87,7 @@ public class ApiUsuarios {
 		}
 	}
 	
-	public ResponseType criaUsuario(CriaUsuarioRequest request) throws Exception {
+	public ResponseType criaUsuario(UsuarioCreate request) throws Exception {
 		Response apiResponse = null;
 
 		try {
