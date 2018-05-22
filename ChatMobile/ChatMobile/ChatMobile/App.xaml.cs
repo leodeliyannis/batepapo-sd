@@ -1,4 +1,5 @@
 using System;
+using System.Net.Sockets;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -7,9 +8,11 @@ namespace ChatMobile
 {
 	public partial class App : Application
 	{
-		public App ()
+        public static bool Conversando { get; set; }
+        public App ()
 		{
 			InitializeComponent();
+            Conversando = false;
 
 			MainPage = new MainPage();
 		}

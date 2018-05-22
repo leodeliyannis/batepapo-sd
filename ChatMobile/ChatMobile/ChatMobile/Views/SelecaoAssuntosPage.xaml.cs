@@ -34,7 +34,7 @@ namespace ChatMobile
             seguranca.Toggled += (s, e) => _seguranca = !_seguranca;
             traicao.Toggled += (s, e) => _traicao = !_traicao;
 
-            proximaBtn.Clicked += async (s, e) => await Navigation.PushAsync(new EscolhaAssuntoPage());
+            proximaBtn.Clicked += async (s, e) => await Navigation.PushAsync(new EscolhaUsuarioPage());
 
         }
 

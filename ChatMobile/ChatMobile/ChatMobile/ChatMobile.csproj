@@ -9,6 +9,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\EscolhaUsuarioPage.xaml.cs">
+      <DependentUpon>EscolhaUsuarioPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\MasterDetail\MDPageMenuItem.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -18,7 +21,10 @@
     <EmbeddedResource Update="Views\BuscaPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\EscolhaAssuntoPage.xaml">
+    <EmbeddedResource Update="Views\ChatPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\EscolhaUsuarioPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\MasterDetail\MDPage.xaml">
