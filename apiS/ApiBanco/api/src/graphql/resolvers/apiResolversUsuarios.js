@@ -48,6 +48,36 @@ const apiResolversUsuario = {
     return {cdRetorno: 0, dsRetorno: 'Sucesso', Usuarios: usuarios}
   },
 
+  getTopicosUsuarios: async ({input}) => {
+
+    let validToken = await verificaToken(input.token)
+
+    if(!validToken)
+      return {cdRetorno: -1, dsRetorno: 'Token não informado, invalido ou expirado!'}
+
+    let usuarios = await usuarioModel.find({Topicos.nome: input.topico},{Acessos:0, Topicos:0, Chats:0, Configuracao:0,}).exec()
+
+    if (!usuarios)
+      return {cdRetorno: -2, dsRetorno: 'Erro ao buscar os usuários do Banco de Dados'}
+
+    return {cdRetorno: 0, dsRetorno: 'Sucesso', Usuarios: usuarios}
+  },
+
+  getUsuariosTopicos: async ({input}) => {
+
+    let validToken = await verificaToken(input.token)
+
+    if(!validToken)
+      return {cdRetorno: -1, dsRetorno: 'Token não informado, invalido ou expirado!'}
+
+    let usuarios = await usuarioModel.find({Nome: input.nome},{Acessos:0, Chats:0, Configuracao:0,}).exec()
+
+    if (!usuarios)
+      return {cdRetorno: -2, dsRetorno: 'Erro ao buscar os usuários do Banco de Dados'}
+
+    return {cdRetorno: 0, dsRetorno: 'Sucesso', Usuarios: usuarios}
+  },
+
   createUsuario: ({input}) => {
 
     create = {}

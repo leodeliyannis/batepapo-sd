@@ -69,6 +69,8 @@ const apiSchemaUsuarioQuery = `
   type Query {
     getUsuarios(input: inToken): tyUsuario
     login      (input: inLogin): tyResponseLogin
+    getTopicosUsuarios (input: inTopico): tyUsuario
+    getUsuariosTopicos (input: inUsuario): tyUsuario
 
     estatisticaQtdUserAcesso        (input: inToken): tyResponseEstatistica
     estatisticaTopicosPesquisa      (input: inToken): tyResponseTopicosPesquisa
