@@ -39,9 +39,10 @@ namespace ChatMobile
 
         private void OnAssuntoSelecionado(object sender, EventArgs e)
         {
+            //buscar lista de usuarios no servidor P2P
             lvUsuarios.ItemsSource = new ObservableCollection<Usuario>
             {
-                new Usuario{Id = 0, Nome = "Felipe", IP = "10.0.235.160"}
+                new Usuario{Id = 0, Nome = "Felipe", IP = "192.168.43.12"}
             };
         }
 

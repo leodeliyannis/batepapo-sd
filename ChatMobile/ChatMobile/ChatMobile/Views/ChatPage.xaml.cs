@@ -34,7 +34,7 @@ namespace ChatMobile.Views
             TCP.Connect(ip, 2017);
             App.Conversando = true;            
             Stream = TCP.GetStream();
-            StreamWriter = new StreamWriter(TCP.GetStream()); //Usado para escrever
+            StreamWriter = new StreamWriter(TCP.GetStream()); 
             StreamWriter.AutoFlush = true;
             
             Resposta = new Thread(Escutando);
@@ -45,11 +45,11 @@ namespace ChatMobile.Views
 
         private async void Escutando(object obj)
         {
-            Byte[] data = new Byte[1024 * 8];
+            Byte[] data = new Byte[1024 * 8]; 
             while (App.Conversando)
             {
                 String responseData = String.Empty;
-                Int32 bytes = await Stream.ReadAsync(data, 0, data.Length);
+                Int32 bytes = await Stream.ReadAsync(data, 0, data.Length); 
                 responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
                 var label = AddLabel(Color.Blue, responseData);
                 Device.BeginInvokeOnMainThread(async () =>
@@ -65,13 +65,9 @@ namespace ChatMobile.Views
         {
             if (TCP.Connected)
             {
-  //              Byte[] data;
                 var label = AddLabel(Color.ForestGreen, entTxt.Text);
                 stack.Children.Add(label);
-//                data = System.Text.Encoding.ASCII.GetBytes(entTxt.Text + eol);
-
                 StreamWriter.WriteLine(entTxt.Text);
-
                 await scroll.ScrollToAsync(stack, ScrollToPosition.End, false);
 
                 entTxt.Text = string.Empty;
@@ -83,7 +79,7 @@ namespace ChatMobile.Views
             
         }
 
-        Label AddLabel(Color cor, string str)
+        Label AddLabel(Color cor, string str) 
         {
             return new Label
             {
