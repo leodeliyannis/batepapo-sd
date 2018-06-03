@@ -10,6 +10,7 @@ const apiSchemaUsuarioQuery = `
     _id: String!
     Nome: String!
     IPaddres: String!
+    Topicos: [tyTopico]
     Acesso: tyAcesso
     Configuracao: tyConfig
   }
@@ -30,6 +31,10 @@ const apiSchemaUsuarioQuery = `
   type tyConfigAtualizacoes {
     usuario: String
     dt_atualizacao: String
+  }
+
+  type tyTopico {
+  	nome: String
   }
 
   type tyAcesso {
