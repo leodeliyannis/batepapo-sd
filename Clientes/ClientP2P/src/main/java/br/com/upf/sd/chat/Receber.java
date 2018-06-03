@@ -1,8 +1,6 @@
 package br.com.upf.sd.chat;
 
 import java.io.DataInputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.Arrays;
 
 import javax.crypto.Cipher;
@@ -11,7 +9,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.xml.bind.DatatypeConverter;
 
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Text;
+import org.w3c.dom.Text;
 
 import br.com.upf.sd.Default;
 
@@ -38,20 +36,8 @@ public class Receber implements Runnable {
 	
 	public void run() {
 		Default diffieHellman = new Default();
-		
+	
 		try {
-			
-//			if(dIn != null) {
-//				serverSocket = new ServerSocket(Integer.parseInt(recebe));
-//				
-//				Socket cliente = serverSocket.accept();  
-//				cliente.setSoTimeout(10000000);//10 min
-//				
-//				DataInputStream dIn = new DataInputStream(cliente.getInputStream());
-//				
-//				System.out.println("Obtendo conexão segura");
-//			}
-			
 			while (true) {
 				
 				display.sleep();
@@ -84,7 +70,7 @@ public class Receber implements Runnable {
 		 	    
 		        System.out.println("\nMensagem recebida:\n"+new String(decoded, "UTF-8"));
 		        System.out.println("--------------------------------------");
-		        txMensagens.append(" -- "+new String(decoded, "UTF-8")+"\n");
+//		        txMensagens.append(" -- "+new String(decoded, "UTF-8")+"\n");
 			}
 			
 		} catch (Exception e) {				
