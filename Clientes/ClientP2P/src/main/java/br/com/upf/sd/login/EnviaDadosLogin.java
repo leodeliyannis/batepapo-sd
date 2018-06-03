@@ -42,7 +42,7 @@ public class EnviaDadosLogin implements Runnable {
 	
 	public EnviaDadosLogin(Argumentos argumentos, SecretKey desKey) throws SocketException, UnknownHostException {
 		clientSocket = new DatagramSocket();
-		IPAddress = InetAddress.getByName("localhost");
+		IPAddress = InetAddress.getByName(argumentos.getIp());
 		this.user = argumentos.getUsuarioInput();
 		this.token = argumentos.getToken();
 		this.porta = argumentos.getPorta();
@@ -67,7 +67,6 @@ public class EnviaDadosLogin implements Runnable {
 			byte[] mensagemRecebida;
 		
 			try {
-				
 				clientSocket.setSoTimeout(5000);
 				
 				byte[] encoded  = encoded(user, diffieHellman);            	

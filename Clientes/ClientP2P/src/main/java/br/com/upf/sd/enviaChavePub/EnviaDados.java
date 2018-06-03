@@ -19,7 +19,6 @@ public class EnviaDados {
 	    Socket socket = null;
 	    
 	    if(etapa.equals("LOGIN")) {
-	    	System.out.println("Etapa login!");
 	    	port += 1;
 	    }
 	    

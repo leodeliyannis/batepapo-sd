@@ -1,7 +1,6 @@
 package br.com.upf.sd.ui;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -53,8 +52,6 @@ public class UIChat {
 				serverSocket = s;	
 				UIMenu.conectado = true;
 				cliente = serverSocket.accept();
-			}else {
-				//serverSocket = new ServerSocket(Integer.parseInt(recebe));			
 			}
 			
 			UIChat window = new UIChat();
@@ -74,43 +71,43 @@ public class UIChat {
 		shlChat.open();
 		shlChat.layout();		
 		
-	    	try {
-	    			    		
-				socket = new Socket(host, Integer.parseInt(conecta));
-				socket.setSoTimeout(10000000);//10 min
-				System.out.println("Conexão segura estabelecida");
-				
-				OutputStreamWriter wr = new OutputStreamWriter(socket.getOutputStream());
-				
-				btnEnvia.addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent arg0) {
-						try {
-							
-							wr.write(txMensagensEnvia.getText());
-							txMensagensRecebe.append(nome+" - "+txMensagensEnvia.getText()+"\n");
-							txMensagensEnvia.setText("");
-							wr.flush();
-						}catch(Exception e) {
-							
-						}
+    	try {
+    			    		
+			socket = new Socket(host, Integer.parseInt(conecta));
+			socket.setSoTimeout(10000000);//10 min
+			System.out.println("Conexão segura estabelecida");
+			
+			OutputStreamWriter wr = new OutputStreamWriter(socket.getOutputStream());
+			
+			btnEnvia.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent arg0) {
+					try {
+						
+						wr.write(txMensagensEnvia.getText());
+						txMensagensRecebe.append(nome+" - "+txMensagensEnvia.getText()+"\n");
+						txMensagensEnvia.setText("");
+						wr.flush();
+					}catch(Exception e) {
+						
 					}
-				});
-				
-				
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-				try {
-	        		System.err.println("Finalizando socket");
-	        		//Finaliza objetos
-	        		socket.shutdownInput();
-					socket.shutdownOutput();
-					socket.close();
-				} catch (IOException ex) {
-					System.err.println("Erro ao finalizar os objetos em enviar: "+ex);
-				}       
-			} 
+				}
+			});
+			
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+        		System.err.println("Finalizando socket");
+        		//Finaliza objetos
+        		socket.shutdownInput();
+				socket.shutdownOutput();
+				socket.close();
+			} catch (IOException ex) {
+				System.err.println("Erro ao finalizar os objetos em enviar: "+ex);
+			}       
+		} 
 		
 		while (!shlChat.isDisposed()) {
 			if (!display.readAndDispatch()) {
@@ -145,7 +142,7 @@ public class UIChat {
 		
 	}
 	
-	static class Escreve extends Thread{
+	static class Escreve extends Thread {
 		public Escreve() {}
 		
 		@Override
@@ -158,7 +155,7 @@ public class UIChat {
 				}
 				
 				cliente.setSoTimeout(10000000);//10 min
-	    		DataInputStream dIn = new DataInputStream(cliente.getInputStream());
+	    		//DataInputStream dIn = new DataInputStream(cliente.getInputStream());
 				
 	    		System.out.println("Obtendo conexão segura");
 	    	
