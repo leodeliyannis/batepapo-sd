@@ -25,3 +25,5 @@ hs_err_pid*
 /ChatMobile/.vs/ChatMobile
 /ChatMobile/ChatMobile/ChatMobile/bin/Debug/netstandard2.0
 /apiS/ApiSoap/api
+apiS/ApiP2P/src/main/java/br/com/upf/sd/main/OrquestradorLoginCrypt.java
+apiS/ApiP2P/src/main/java/br/com/upf/sd/main/OrquestradorLoginCrypt.java
