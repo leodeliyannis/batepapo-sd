@@ -46,7 +46,7 @@ services:
                 max_attempts: 3
                 window: 120s
         healthcheck:
-            test: curl -f http://172.18.0.4:4000/test || exit 1
+            test: curl -f http://apiBanco-node1:4000/test || exit 1
             interval: 40s
             timeout: 20s
             retries: 3
@@ -71,7 +71,7 @@ services:
                 max_attempts: 3
                 window: 120s
         healthcheck:
-            test: curl -f http://172.18.0.5:4000/test || exit 1
+            test: curl -f http://apiBanco-node2:4000/test || exit 1
             interval: 40s
             timeout: 20s
             retries: 3

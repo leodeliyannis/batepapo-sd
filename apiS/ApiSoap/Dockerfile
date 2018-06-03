@@ -1,4 +1,4 @@
-From tomcat:slim
+From tomcat
 
 # Copy to images tomcat path 
 #ADD /api/src/main/webapp/WEB-INF/web.xml /usr/local/tomcat/conf/ 
