@@ -51,6 +51,14 @@ const apiSchemaUsuarioMutation = `
     token: String!
   }
 
+  input inTopico {
+    topico: String!
+  }
+
+  input inUsuario {
+    nome: String!
+  }
+
   type Mutation {
     createUsuario(input: inCreateUsuario): tyResponse
     updateUsuario(input: inUpdateUsuario): tyResponse
