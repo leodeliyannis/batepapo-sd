@@ -41,7 +41,7 @@ public class EnviaDados {
         	try {
         		//Finaliza objetos
         		if(!socket.isClosed()) {
-        			//socket.shutdownOutput();
+        			socket.shutdownOutput();
     				socket.close();	
         		}
 			} catch (IOException e) {

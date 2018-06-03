@@ -55,7 +55,7 @@ public class OrquestradorLogin extends Thread {
 				
 				// Bob codifica sua chave pública
 		        byte[] bobPubKeyEnc = kPair.getPublic().getEncoded();
-		        diffieHellman.printHex(modoDebug, "\nChave publica criada:", bobPubKeyEnc);
+		        //diffieHellman.printHex(modoDebug, "\nChave publica criada:", bobPubKeyEnc);
 		        
 		        //envia para Alice
 		        String ipRecebido = recebeDados.getIpConectado();		        
@@ -66,14 +66,15 @@ public class OrquestradorLogin extends Thread {
 		        
 		        //Gera segredo compartilhado
 		        byte[] segredoCompartilhado = KeyAgree.generateSecret();
-		        diffieHellman.printHex(modoDebug, "\nBob secret:", segredoCompartilhado);
+		        //diffieHellman.printHex(modoDebug, "\nBob secret:", segredoCompartilhado);
 		        
 		        //Gera chave simetrica AES
 		        SecretKey bobDesKey = diffieHellman.criaChaveSecreta(segredoCompartilhado, aesTamanho);                   	             	        	       
-		        diffieHellman.printHex(modoDebug, "\nChave Simetrica AES:", bobDesKey.getEncoded()); 
+		       // diffieHellman.printHex(modoDebug, "\nChave Simetrica AES:", bobDesKey.getEncoded()); 
 	
 	        	//Conexão com outra ponta(Alice) para o login
 		        RecebeDadosLogin edl = new RecebeDadosLogin(modoDebug, bobDesKey, ipRecebido, porta);
+		        System.out.println("opa");
 		        new Thread(edl).start();
 				
 			}
