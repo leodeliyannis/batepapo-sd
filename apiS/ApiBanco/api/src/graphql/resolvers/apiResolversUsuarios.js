@@ -13,17 +13,29 @@ const apiResolversUsuario = {
     if(!usuario)
       return {cdRetorno: -1, dsRetorno: 'Usuario ou senha invalidos!'}
 
-    var expires = moment().add(1,'days').valueOf();
-    if(usuario.Senha == input.Senha) {
-        var token = jwt.encode({
-          iss: usuario._id,
-          exp: expires
-        }, segredo);
+      var expires = moment().add(1,'days').valueOf();
+      if(usuario.Senha == input.Senha) {
+          var token = jwt.encode({
+            iss: usuario._id,
+            exp: expires
+          }, segredo);
 
         let estLogin = estatisticaModel.findByIdAndUpdate(
           { _id: 'Login' },
           {$set: {nome: 'Login', descricao: 'Qtd login validos'}, $inc: { seq: 1}},
           { upsert: true }
+        ).exec()
+
+        let zera = usuarioModel.update(
+          { Nome: input.Nome },
+          { "$set": { "Topicos":[] }},
+          { multi: true }
+        ).exec()
+
+        let upIp = usuarioModel.findByIdAndUpdate(
+          { _id: usuario._id },
+          {$set: {IPaddres: input.IPaddres}},
+          { upsert: false }
         ).exec()
 
         return {cdRetorno: 0, dsRetorno: 'Sucesso', token: token}
@@ -55,7 +67,7 @@ const apiResolversUsuario = {
     if(!validToken)
       return {cdRetorno: -1, dsRetorno: 'Token não informado, invalido ou expirado!'}
 
-    let usuarios = await usuarioModel.find({Topicos.nome: input.topico},{Acessos:0, Topicos:0, Chats:0, Configuracao:0,}).exec()
+    let usuarios = await usuarioModel.find({"Topicos.nome": input.topico},{Senha:0, Chats:0}).exec()
 
     if (!usuarios)
       return {cdRetorno: -2, dsRetorno: 'Erro ao buscar os usuários do Banco de Dados'}
@@ -70,7 +82,7 @@ const apiResolversUsuario = {
     if(!validToken)
       return {cdRetorno: -1, dsRetorno: 'Token não informado, invalido ou expirado!'}
 
-    let usuarios = await usuarioModel.find({Nome: input.nome},{Acessos:0, Chats:0, Configuracao:0,}).exec()
+    let usuarios = await usuarioModel.find({Nome: input.nome},{Senha:0, Chats:0}).exec()
 
     if (!usuarios)
       return {cdRetorno: -2, dsRetorno: 'Erro ao buscar os usuários do Banco de Dados'}
@@ -162,6 +174,20 @@ const apiResolversUsuario = {
         return {cdRetorno: -2, dsRetorno: 'Erro ao remover o usuário do Banco de Dados, erro: '+e}
     }
 
+  },
+
+  registraTopico: async ({input}) => {
+    let validToken = await verificaToken(input.token)
+
+    if(!validToken)
+      return {cdRetorno: -1, dsRetorno: 'Token não informado, invalido ou expirado!'}
+
+    let topicos = usuarioModel.update(
+      { Nome: input.nome },
+      { "$push": { "Topicos":{nome: input.topico} }}
+    ).exec()
+
+    return {cdRetorno: 0, dsRetorno: 'Sucesso'}
   },
 
   registraAcesso: async ({input}) => {
