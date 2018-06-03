@@ -26,7 +26,7 @@ public class ApiBanco {
 		Response apiResponse = null;
 
 		try {
-			WebTarget endpoint = client.target("http://192.168.0.10:80").path("/usuarios");
+			WebTarget endpoint = client.target("http://127.0.0.1:80").path("/usuarios");
 //			logger.info("endpoint: " + endpoint);
 
 			JSONObject usuarioJson = UsuariosJsonUtil.montaJsonDeLogin(request);
@@ -54,7 +54,7 @@ public class ApiBanco {
 		ResponseType response = null;
 
 		try {
-			WebTarget endpoint = client.target("http://192.168.0.10:80").path("/usuarios");
+			WebTarget endpoint = client.target("http://127.0.0.1:80").path("/usuarios");
 //			logger.info("endpoint: " + endpoint);
 			
 			for(String i: request.getTopicos()) {
@@ -85,7 +85,7 @@ public class ApiBanco {
 		TopicosUsuariosResponse response = null;
 
 		try {
-			WebTarget endpoint = client.target("http://192.168.0.10:80").path("/usuarios");
+			WebTarget endpoint = client.target("http://127.0.0.1:80").path("/usuarios");
 //			logger.info("endpoint: " + endpoint);
 		
 			JSONObject usuarioJson = UsuariosJsonUtil.montaJsonPesquisaTopicos(topico, token);
