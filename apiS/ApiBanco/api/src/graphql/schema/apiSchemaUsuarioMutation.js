@@ -52,14 +52,11 @@ const apiSchemaUsuarioMutation = `
   }
 
   input inTopico {
-    nome: String
     topico: String!
-    token: String!
   }
 
   input inUsuario {
     nome: String!
-    token: String!
   }
 
   type Mutation {
@@ -67,7 +64,6 @@ const apiSchemaUsuarioMutation = `
     updateUsuario(input: inUpdateUsuario): tyResponse
     deleteUsuario(input: inDeleteUsuario): tyResponse
 
-    registraTopico  (input: inTopico):           tyResponse
     registraAcesso  (input: inRegistraAcesso):   tyResponse
     registraPesquisa(input: inRegistraPesquisa): tyResponse
     registraChat    (input: inRegistraChat):     tyResponse
