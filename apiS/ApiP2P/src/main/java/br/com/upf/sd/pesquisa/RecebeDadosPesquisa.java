@@ -13,6 +13,7 @@ import java.net.Socket;
 import br.com.upf.sd.resources.ApiBanco;
 import br.com.upf.sd.types.Pesquisa;
 import br.com.upf.sd.types.TopicosUsuariosResponse;
+import br.com.upf.sd.types.UsuariosTopicosResponse;
 
 public class RecebeDadosPesquisa {	
 	
@@ -80,7 +81,22 @@ public class RecebeDadosPesquisa {
     		    os.flush();
 				
 			} else if(pesquisa.getMetodo().equals("pesquisa_usuario")) { 
-				System.out.println("Ainda não implementado");
+				
+				ApiBanco api = new ApiBanco();
+				UsuariosTopicosResponse topicosUser = api.pesquisaUsuarios(pesquisa.getNome(), pesquisa.getToken());
+                
+				//Monta envio para client
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    	 		ObjectOutputStream os = new ObjectOutputStream(outputStream);
+    	 		os.writeObject(topicosUser);
+    			    	 		
+    	    	//String encoded = DatatypeConverter.printBase64Binary(outputStream.toByteArray());
+    	    	dOut = new DataOutputStream(cliente.getOutputStream());
+
+    		    dOut.writeInt(outputStream.toByteArray().length); // Escreve comprimento da mensagem
+    		    dOut.write(outputStream.toByteArray());           // Envia mensagem
+    		    os.flush();
+    		    
 			}
 			
            
@@ -97,7 +113,7 @@ public class RecebeDadosPesquisa {
         	try {
         		//Finaliza objetos
         		if(!cliente.isClosed()) {
-        			//cliente.shutdownOutput();
+        			cliente.shutdownOutput();
         			cliente.close();	
         		}
         		if(!servidor.isClosed()) {        			

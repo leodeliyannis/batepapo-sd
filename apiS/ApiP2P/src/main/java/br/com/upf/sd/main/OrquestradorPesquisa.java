@@ -19,12 +19,8 @@ private static final int COD_ERRO_TECNICO = -2;
 		final int porta = argumentos.getPorta();	
 		modoDebug = argumentos.getDebug();			
 		
-//		Default diffieHellman = new Default();
 		try{
 			while(true) {
-			
-				//Obtem IP da maquina	
-//				diffieHellman.meuIP();
 				
 				RecebeDadosPesquisa rdp = new RecebeDadosPesquisa();	
 				rdp.getRecebeDados(porta, modoDebug);

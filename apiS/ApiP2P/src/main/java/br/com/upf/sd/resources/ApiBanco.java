@@ -9,37 +9,33 @@ import javax.ws.rs.core.Response;
 
 import org.json.JSONObject;
 
-import br.com.ufp.sd.querys.UsuariosJsonUtil;
+import br.com.upf.sd.querys.UsuariosJsonUtil;
 import br.com.upf.sd.types.LoginRequest;
 import br.com.upf.sd.types.LoginResponse;
 import br.com.upf.sd.types.TopicosUsuariosResponse;
 import br.com.upf.sd.types.UsuarioInput;
+import br.com.upf.sd.types.UsuariosTopicosResponse;
 import br.com.upf.sd.utils.ResponseType;
 import br.com.upf.sd.utils.ResponseUtil;
 
 public class ApiBanco {
 	
-//	private Logger logger = Logger.getLogger(ApiBanco.class);
 	private Client client = ClientBuilder.newClient();
 	
 	public LoginResponse login(LoginRequest request) throws Exception {
 		Response apiResponse = null;
 
 		try {
-			WebTarget endpoint = client.target("http://192.168.0.10:80").path("/usuarios");
-//			logger.info("endpoint: " + endpoint);
+			WebTarget endpoint = client.target("http://127.0.0.1:80").path("/usuarios");
 
 			JSONObject usuarioJson = UsuariosJsonUtil.montaJsonDeLogin(request);
-//			logger.info("json envio: " + usuarioJson.toString());
 
 			apiResponse = endpoint.request().accept(MediaType.APPLICATION_JSON)
 					.post(Entity.json(usuarioJson.toString()));
 
 			ResponseUtil.throwApiExceptionIfAny(apiResponse);
 
-			LoginResponse response = UsuariosJsonUtil.montaDadosRetornoLogin(apiResponse);
-			//logger.info("criaPedido - retorno api headers: " + apiResponse.getStringHeaders());
-//			logger.info("retorno api: " + response);			
+			LoginResponse response = UsuariosJsonUtil.montaDadosRetornoLogin(apiResponse);		
 
 			return response;
 		} finally {
@@ -54,13 +50,11 @@ public class ApiBanco {
 		ResponseType response = null;
 
 		try {
-			WebTarget endpoint = client.target("http://192.168.0.10:80").path("/usuarios");
-//			logger.info("endpoint: " + endpoint);
+			WebTarget endpoint = client.target("http://127.0.0.1:80").path("/usuarios");
 			
 			for(String i: request.getTopicos()) {
 
 				JSONObject usuarioJson = UsuariosJsonUtil.montaJsonDeRegistraTopico(request.getUsuario(), i, token);
-//			    logger.info("json envio: " + usuarioJson.toString());
 	
 				apiResponse = endpoint.request().accept(MediaType.APPLICATION_JSON)
 						.post(Entity.json(usuarioJson.toString()));
@@ -68,9 +62,7 @@ public class ApiBanco {
 				ResponseUtil.throwApiExceptionIfAny(apiResponse);
 	
 				response = UsuariosJsonUtil.montaDadosRetornoRegistraTopico(apiResponse);
-			}
-//			logger.info("registraTopico - retorno api headers: " + apiResponse.getStringHeaders());
-//			logger.info("retorno api: " + response);			
+			}		
 
 			return response;
 		} finally {
@@ -85,21 +77,40 @@ public class ApiBanco {
 		TopicosUsuariosResponse response = null;
 
 		try {
-			WebTarget endpoint = client.target("http://192.168.0.10:80").path("/usuarios");
-//			logger.info("endpoint: " + endpoint);
+			WebTarget endpoint = client.target("http://127.0.0.1:80").path("/usuarios");
 		
 			JSONObject usuarioJson = UsuariosJsonUtil.montaJsonPesquisaTopicos(topico, token);
-//			    logger.info("json envio: " + usuarioJson.toString());
 
 			apiResponse = endpoint.request().accept(MediaType.APPLICATION_JSON)
 					.post(Entity.json(usuarioJson.toString()));
 
 			ResponseUtil.throwApiExceptionIfAny(apiResponse);
 
-			response = UsuariosJsonUtil.montaDadosRetornoPesquisaTopicos(apiResponse);
-			
-//			logger.info("criaPedido - retorno api headers: " + apiResponse.getStringHeaders());
-//			logger.info("retorno api: " + response);			
+			response = UsuariosJsonUtil.montaDadosRetornoPesquisaTopicos(apiResponse);		
+
+			return response;
+		} finally {
+			if (apiResponse != null) {
+				apiResponse.close();
+			}
+		}
+	}
+	
+	public UsuariosTopicosResponse pesquisaUsuarios(String nome, String token) throws Exception {
+		Response apiResponse = null;
+		UsuariosTopicosResponse response = null;
+
+		try {
+			WebTarget endpoint = client.target("http://127.0.0.1:80").path("/usuarios");
+		
+			JSONObject usuarioJson = UsuariosJsonUtil.montaJsonPesquisaUsuarios(nome, token);
+
+			apiResponse = endpoint.request().accept(MediaType.APPLICATION_JSON)
+					.post(Entity.json(usuarioJson.toString()));
+
+			ResponseUtil.throwApiExceptionIfAny(apiResponse);
+
+			response = UsuariosJsonUtil.montaDadosRetornoPesquisaUsuarios(apiResponse);
 
 			return response;
 		} finally {

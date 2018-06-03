@@ -24,12 +24,9 @@ public class OrquestradorLogin extends Thread {
 		aesTamanho = argumentos.getAes() == null ? aesTamanho : argumentos.getAes();			
 		
 		try{
-//			while(true) {
 			
-		        RecebeDadosLogin edl = new RecebeDadosLogin(modoDebug, porta);
-		        new Thread(edl).start();
-				
-//			}
+	        RecebeDadosLogin edl = new RecebeDadosLogin(modoDebug, porta);
+	        new Thread(edl).start();
 
 		} catch (Exception e) {
 			System.err

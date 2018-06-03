@@ -1,8 +1,5 @@
 package br.com.upf.sd.ui;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +33,6 @@ public class UILogin {
 	private Table table;
 	private Text txPortaRecebe;
 	private Text txPortaConecta;
-	//private ProgressBar progressBar;
 
 	/**
 	 * Launch the application.
@@ -165,20 +161,7 @@ public class UILogin {
 		btnLogin.addMouseListener(new MouseAdapter() {	
 
 			@Override
-			public void mouseUp(MouseEvent e) {		
-				
-//				btnLogin.setEnabled(false);	
-//				txUser.setEnabled(false);
-//				txSenha.setEnabled(false);
-				
-//				Display.getDefault().asyncExec(new Runnable() {
-//				    public void run() {
-//				    	ProgressBar progressBar = new ProgressBar(shell, SWT.INDETERMINATE);
-//				    	progressBar.setBounds(103, 190, 216, 17);
-//						progressBar.setEnabled(true); 
-				    	
-//				    }
-//				});
+			public void mouseUp(MouseEvent e) {
 
 				try {
 					
@@ -225,7 +208,7 @@ public class UILogin {
 
 					synchronized(edl) {
 												
-						edl.wait(5000);
+						edl.wait(2000);
 						lblStatusLogin.setText("Token recebido");
 						
 						if(!br.com.upf.sd.utils.Utils.nvl(edl.getToken()).equals("")) {
@@ -238,21 +221,8 @@ public class UILogin {
 						    args[3] = txPortaConecta.getText();
 						    args[4] = txPortaRecebe.getText();
 						    
-						    //serializar lista de topicos
-						    ObjectOutputStream oos = null;
-						    try {
-						         FileOutputStream fos= new FileOutputStream("topicos");
-						         oos= new ObjectOutputStream(fos);
-						         oos.writeObject(topicos);
-						         oos.close();
-						         fos.close();
-		
-					         } catch(IOException ioe) {
-					            ioe.printStackTrace();
-					         }
-
 							shell.dispose();
-							UIMenu.main(args);
+							UIMenu.main(args, topicos);
 
 						} else if(edl.getToken() == null) { 
 							lblStatusLogin.setText("Erro ao conectar ao servidor, Timed out!");
@@ -264,7 +234,6 @@ public class UILogin {
 				
 				} catch (Exception e1) {
 					btnLogin.setEnabled(true);
-					//progressBar.setVisible(false);
 					System.err.println(e1);
 					lblStatusLogin.setText("Erro ao conectar ao servidor");
 				}

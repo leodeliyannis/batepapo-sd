@@ -94,6 +94,7 @@ public class RecebeDadosLoginCrypt implements Runnable {
 			LoginResponse responseLogin = new LoginResponse();
 			ResponseType responseRegistraTopico = new ResponseType();
 			
+			System.out.println("Executando ApiBanco");
 			ApiBanco apiBanco = new ApiBanco();
 			responseLogin = apiBanco.login(request);
 			

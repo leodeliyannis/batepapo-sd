@@ -1,4 +1,4 @@
-package br.com.ufp.sd.querys;
+package br.com.upf.sd.querys;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -9,8 +9,10 @@ import org.json.JSONObject;
 
 import br.com.upf.sd.types.LoginRequest;
 import br.com.upf.sd.types.LoginResponse;
+import br.com.upf.sd.types.Topico;
 import br.com.upf.sd.types.TopicosUsuariosResponse;
 import br.com.upf.sd.types.Usuario;
+import br.com.upf.sd.types.UsuariosTopicosResponse;
 import br.com.upf.sd.utils.ResponseType;
 import br.com.upf.sd.utils.Security;
 
@@ -64,7 +66,7 @@ public class UsuariosJsonUtil {
 		return montaRetorno(jsonRetorno, "registraTopico");
 	}
 	
-	/** montaJsonDeRegistraTopico
+	/** montaJsonPesquisaTopicos
 	 * 
 	 * return cdRetorno dsRetorno Usuarios{Nome IPaddres}
 	 */
@@ -78,9 +80,7 @@ public class UsuariosJsonUtil {
 	
 	public static TopicosUsuariosResponse montaDadosRetornoPesquisaTopicos(Response apiResponse) {		
 		JSONObject jsonRetorno = new JSONObject(apiResponse.readEntity(String.class));
-		TopicosUsuariosResponse resp = new TopicosUsuariosResponse();
-		
-//		logger.info("getTopicosUsuarios - json response: " + jsonRetorno);			
+		TopicosUsuariosResponse resp = new TopicosUsuariosResponse();		
 		
 		resp.setCdRetorno(jsonRetorno.getJSONObject("data").getJSONObject("getTopicosUsuarios").getInt("cdRetorno"));
 		resp.setDsRetorno(jsonRetorno.getJSONObject("data").getJSONObject("getTopicosUsuarios").getString("dsRetorno"));
@@ -104,6 +104,44 @@ public class UsuariosJsonUtil {
 		user.setStatus("Online");
 		
 		return user;
+	}
+	
+	/** montaJsonPesquisaUsuarios
+	 * 
+	 * return cdRetorno dsRetorno Usuarios{Nome IPaddres}
+	 */
+	public static JSONObject montaJsonPesquisaUsuarios(String nome, String token) {
+		JSONObject jsonObj = new JSONObject();		
+		
+		jsonObj.put("query", "{getUsuariosTopicos(input: {nome: \""+ nome +"\", token: \""+ token +"\"}) {cdRetorno dsRetorno Usuarios{Nome IPaddres Topicos{nome}}}}");
+			
+		return jsonObj;
+	}
+	
+	public static UsuariosTopicosResponse montaDadosRetornoPesquisaUsuarios(Response apiResponse) {		
+		JSONObject jsonRetorno = new JSONObject(apiResponse.readEntity(String.class));
+		UsuariosTopicosResponse resp = new UsuariosTopicosResponse();		
+		
+		resp.setCdRetorno(jsonRetorno.getJSONObject("data").getJSONObject("getUsuariosTopicos").getInt("cdRetorno"));
+		resp.setDsRetorno(jsonRetorno.getJSONObject("data").getJSONObject("getUsuariosTopicos").getString("dsRetorno"));
+
+		if(resp.getCdRetorno() == 0) {
+			for (int i = 0; i < jsonRetorno.getJSONObject("data").getJSONObject("getUsuariosTopicos").getJSONArray("Usuarios").length(); ++i) {
+				JSONObject jsonUsuario = jsonRetorno.getJSONObject("data").getJSONObject("getUsuariosTopicos").getJSONArray("Usuarios").getJSONObject(i);
+				for (int j = 0; j < jsonUsuario.getJSONArray("Topicos").length(); ++j) {
+					JSONObject jsonTopicos = jsonUsuario.getJSONArray("Topicos").getJSONObject(j);
+					Topico topico = new Topico();
+
+					topico.setTopico(jsonTopicos.getString("nome"));
+					topico.setIpAddres(jsonUsuario.getString("IPaddres"));
+					topico.setStatus("Online");
+					
+					resp.getTopicos().add(topico);
+				}
+			}
+		}		
+		
+		return resp;
 	}
 	
 	/** Metodo para todos os reponses de mutation 

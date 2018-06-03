@@ -1,11 +1,9 @@
 package br.com.upf.sd.ui;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -22,17 +20,18 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
-import br.com.upf.sd.enviaChavePub.RecebeDadosThread;
 import br.com.upf.sd.pesquisa.EnviaDadosPesquisa;
 import br.com.upf.sd.types.Pesquisa;
+import br.com.upf.sd.types.Topico;
 import br.com.upf.sd.types.TopicosUsuariosResponse;
 import br.com.upf.sd.types.Usuario;
+import br.com.upf.sd.types.UsuariosTopicosResponse;
 
 public class UIMenu {
 
 	protected Shell shell;
 	private Table tbPesquisa;
-	private Text text_1;
+	private Text txPessoa;
 	private TableColumn tblclmnPessoa;
 	private TableColumn tblclmnTopico;
 	private TableColumn tblclmnConversar;
@@ -42,10 +41,9 @@ public class UIMenu {
 	private static String token;
 	private static String ipServidor;
 	private static String meuUser;
-	private static ArrayList<String> topicos = new ArrayList<String>();
+	private static List<String> topicos = new ArrayList<String>();
 	private static TopicosUsuariosResponse topicosUsuario;
-	private static RecebeDadosThread recebeKey = null;
-	private static byte[] chavePubKeyEncRecebida;
+	private static UsuariosTopicosResponse usuarioTopicos;
 	
 	private static String conecta;
 	private static String recebe;
@@ -58,7 +56,7 @@ public class UIMenu {
 	 * Launch the application.
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args, List<String> topicosArgs) {//, List<String> topicosArgs
 		try {
 			
 			token = args[0];
@@ -67,24 +65,11 @@ public class UIMenu {
 			
 			conecta = args[3];
 			recebe = args[4];
+			
+			topicos = topicosArgs;
+			
 			Escuta e = new Escuta();
 			e.start();
-			
-			//Carrega meus topicos
-			try {
-				FileInputStream fis = new FileInputStream("topicos");
-	            ObjectInputStream ois = new ObjectInputStream(fis);
-	            topicos = (ArrayList<String>) ois.readObject();
-	            ois.close();
-	            fis.close();
-	         } catch(IOException ioe) {
-	             ioe.printStackTrace();
-	             return;
-	         } catch(ClassNotFoundException c) {
-	             System.err.println("Class not found");
-	             c.printStackTrace();
-	             return;
-	         }
 
 			UIMenu window = new UIMenu();
 			window.open();		
@@ -103,40 +88,6 @@ public class UIMenu {
 		shell.open();
 		shell.layout();
 		
-		//Aguarda chat
-//		try {
-//			recebeKey = new RecebeDadosThread(Integer.parseInt(recebe), "r", true);
-//			//recebe chave em formato codificado de Alice
-//			recebeKey.start();
-//			
-//			System.out.println("Inicia synchronized");
-//			synchronized(recebeKey) {
-//				
-//				System.out.println("Aguardando chave");
-//				//recebeKey.wait();
-//				chavePubKeyEncRecebida = recebeKey.getKey();
-//				
-//				//serializar lista de topicos
-//			    ObjectOutputStream oos = null;
-//			    try {
-//			         FileOutputStream fos= new FileOutputStream("key");
-//			         oos= new ObjectOutputStream(fos);
-//			         oos.writeObject(chavePubKeyEncRecebida);
-//			         oos.close();
-//			         fos.close();
-//
-//		        } catch(IOException ioe) {
-//		             ioe.printStackTrace();
-//		        }
-//			    System.out.println("Iniciando chat");
-//			    //UIChat.main(new String[] {"r", null, recebeKey.getIpConectado(), conecta, recebe});
-//			}
-//		
-//		} catch(Exception e) {
-//			recebeKey.stop();
-//			System.err.println(e);
-//			//System.exit(0);
-//		}
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
@@ -155,7 +106,6 @@ public class UIMenu {
 		//Ao fechar janela main Stop na thread de chat
 		shell.addListener(SWT.Close, new Listener() {	   
 			public void handleEvent(org.eclipse.swt.widgets.Event arg0) {
-				recebeKey.stop();
 		        System.exit(0);				
 			}
 	    });
@@ -177,8 +127,8 @@ public class UIMenu {
 		tblclmnConversar.setWidth(100);
 		tblclmnConversar.setText("Status");
 		
-		text_1 = new Text(shell, SWT.BORDER);
-		text_1.setBounds(170, 438, 243, 21);
+		txPessoa = new Text(shell, SWT.BORDER);
+		txPessoa.setBounds(170, 438, 243, 28);
 		
 		tbMeusTopicos = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
 		tbMeusTopicos.setBounds(723, 105, 192, 294);
@@ -206,7 +156,7 @@ public class UIMenu {
 		}
 
 		Button btnPesquisaTopicos = new Button(shell, SWT.NONE);
-		btnPesquisaTopicos.setBounds(419, 405, 117, 25);
+		btnPesquisaTopicos.setBounds(419, 408, 117, 25);
 		btnPesquisaTopicos.setText("Pesquisa Topico");
 		
 		btnPesquisaTopicos.addSelectionListener(new SelectionAdapter() {
@@ -219,7 +169,7 @@ public class UIMenu {
 				pesquisa.setToken(token);
 				
 				EnviaDadosPesquisa edp = new EnviaDadosPesquisa();
-				topicosUsuario = edp.getEnviaDadosPesquisa(ipServidor, 10353, true, pesquisa);
+				topicosUsuario = edp.getEnviaDadosPesquisaTopicos(ipServidor, 10353, true, pesquisa);
 				
 				tbPesquisa.removeAll();
 								
@@ -233,13 +183,27 @@ public class UIMenu {
 		});		
 
 		Button btnPesquisaPessoa = new Button(shell, SWT.NONE);
-		btnPesquisaPessoa.setBounds(419, 436, 117, 25);
+		btnPesquisaPessoa.setBounds(419, 439, 117, 25);
 		btnPesquisaPessoa.setText("Pesquisa Pessoa");
-		
 		
 		btnPesquisaPessoa.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				Pesquisa pesquisa = new Pesquisa();
+				
+				pesquisa.setMetodo("pesquisa_usuario");
+				pesquisa.setNome(txPessoa.getText());
+				pesquisa.setToken(token);
+				
+				EnviaDadosPesquisa edp = new EnviaDadosPesquisa();
+				usuarioTopicos = edp.getEnviaDadosPesquisaUsuario(ipServidor, 10353, true, pesquisa);
+				
+				tbPesquisa.removeAll();
+				
+				for(Topico i: usuarioTopicos.getTopicos()) {
+					tableItem_1 = new TableItem(tbPesquisa, SWT.NONE);					
+					tableItem_1.setText(new String[] { ""+pesquisa.getNome(), ""+i.getTopico(), i.getStatus()});
+				}
 				
 			}			
 		});		
