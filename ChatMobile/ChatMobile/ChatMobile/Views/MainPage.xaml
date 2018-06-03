@@ -9,6 +9,41 @@
         <Entry Placeholder="Senha:" x:Name="password"/>
         <Entry Placeholder="IP do servidor:" x:Name="serverIp" />
         <Button VerticalOptions="EndAndExpand" Text="Logar" x:Name="loginBtn"/>
+        <Grid>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Eleição 2018" HorizontalOptions="Start" VerticalOptions="Center"/>
+                <Switch x:Name="eleicao" HorizontalOptions="EndAndExpand"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" Grid.Column="1">
+                <Label Text="Segurança Publica" HorizontalOptions="Start" VerticalOptions="Center"/>
+                <Switch x:Name="seguranca" HorizontalOptions="EndAndExpand"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" Grid.Row="1">
+                <Label Text="Preço da Gasolina" HorizontalOptions="Start" VerticalOptions="Center"/>
+                <Switch x:Name="gasolina" HorizontalOptions="EndAndExpand"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
+                <Label Text="Saúde Pública" HorizontalOptions="Start" VerticalOptions="Center"/>
+                <Switch x:Name="saude" HorizontalOptions="EndAndExpand"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" Grid.Row="2">
+                <Label Text="Aposentadoria" HorizontalOptions="Start" VerticalOptions="Center"/>
+                <Switch x:Name="aposentadoria" HorizontalOptions="EndAndExpand"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" Grid.Row="2" Grid.Column="1">
+                <Label Text="Traição" HorizontalOptions="Start" VerticalOptions="Center"/>
+                <Switch x:Name="traicao" HorizontalOptions="EndAndExpand"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" Grid.Row="3">
+                <Label Text="Multas de Transito" HorizontalOptions="Start" VerticalOptions="Center"/>
+                <Switch x:Name="multas" HorizontalOptions="EndAndExpand"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" Grid.Row="3" Grid.Column="1">
+                <Label Text="Educação" HorizontalOptions="Start" VerticalOptions="Center"/>
+                <Switch x:Name="educacao" HorizontalOptions="EndAndExpand"/>
+            </StackLayout>
+            <Button x:Name="proximaBtn" Text="Proxima" Grid.Row="5" Grid.Column="1"/>
+        </Grid>
     </StackLayout>
 
 </ContentPage>
