@@ -34,7 +34,7 @@ namespace ChatMobile
                 MenuItems = new ObservableCollection<MDPageMenuItem>(new[]
                 {
                     new MDPageMenuItem(typeof(BuscaPage)) { Id = 0, Title = "Busca" },
-                    new MDPageMenuItem(typeof(SelecaoAssuntosPage)) { Id = 1, Title = "Entrar no Chat" }                    
+                    new MDPageMenuItem(typeof(EscolhaUsuarioPage)) { Id = 1, Title = "Entrar no Chat" }                    
                 });
             }
             
