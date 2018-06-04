@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:ChatMobile"
+             x:Class="ChatMobile.MainPage">
+
+    <StackLayout>
+        <Entry Placeholder="Usuario:" x:Name="user"/>
+        <Entry Placeholder="Senha:" x:Name="password"/>
+        <Entry Placeholder="IP do servidor:" x:Name="serverIp" />
+        <Button VerticalOptions="EndAndExpand" Text="Logar" x:Name="loginBtn"/>
+    </StackLayout>
+
+</ContentPage>
