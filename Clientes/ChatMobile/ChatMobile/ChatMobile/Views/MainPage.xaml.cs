@@ -1,9 +1,13 @@
 ﻿using ChatMobile.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -66,17 +70,30 @@ namespace ChatMobile
         private bool Conectar()
         {
             List<string> lista = PreencheLista();
+            Token token = new Token();
 
             UsuarioInput usuario = new UsuarioInput { usuario = user.Text, senha = password.Text, topicos = lista };
+            Argumentos argumentos = new Argumentos();
+
+            argumentos.modo = "c";
+            argumentos.ip = serverIp.Text;
+            argumentos.porta = 10453;
+            argumentos.debug = true;
+            argumentos.dh = 1024;
+            argumentos.aes = 128;
+            argumentos.usuarioInput = usuario;
+            argumentos.token =token;
 
             Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             IPAddress ip = IPAddress.Parse(serverIp.Text);
 
-
-            string str = user.Text + " - " + password.Text;
-            byte[] sendbuf = Encoding.ASCII.GetBytes(str);
+            var json = string.Empty;
+            json = JsonConvert.SerializeObject(usuario);
+            
+            //string str = user.Text + " - " + password.Text;
+            byte[] sendbuf = Encoding.ASCII.GetBytes(json);
             IPEndPoint ep = new IPEndPoint(ip, 10553);
-
+            
             s.SendTo(sendbuf, ep);
             return true;
         }
