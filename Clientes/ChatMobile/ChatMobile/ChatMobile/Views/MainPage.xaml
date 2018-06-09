@@ -1,4 +1,3 @@
-<<<<<<< HEAD:ChatMobile/ChatMobile/ChatMobile/Views/MainPage.xaml
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -6,9 +5,9 @@
              x:Class="ChatMobile.MainPage">
 
     <StackLayout>
-        <Entry Placeholder="Usuario:" x:Name="user"/>
-        <Entry Placeholder="Senha:" x:Name="password"/>
-        <Entry Placeholder="IP do servidor:" x:Name="serverIp" />
+        <Entry Placeholder="Usuario:" x:Name="user" Text="Claude"/>
+        <Entry Placeholder="Senha:" x:Name="password" Text="Claude"/>
+        <Entry Placeholder="IP do servidor:" x:Name="serverIp" Text="127.0.0.1"/>
         <Button VerticalOptions="EndAndExpand" Text="Logar" x:Name="loginBtn"/>
         <Grid>
             <StackLayout Orientation="Horizontal">
@@ -43,24 +42,8 @@
                 <Label Text="Educação" HorizontalOptions="Start" VerticalOptions="Center"/>
                 <Switch x:Name="educacao" HorizontalOptions="EndAndExpand"/>
             </StackLayout>
-            <Button x:Name="proximaBtn" Text="Proxima" Grid.Row="5" Grid.Column="1"/>
+            
         </Grid>
     </StackLayout>
 
 </ContentPage>
-=======
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:ChatMobile"
-             x:Class="ChatMobile.MainPage">
-
-    <StackLayout>
-        <Entry Placeholder="Usuario:" x:Name="user"/>
-        <Entry Placeholder="Senha:" x:Name="password"/>
-        <Entry Placeholder="IP do servidor:" x:Name="serverIp" />
-        <Button VerticalOptions="EndAndExpand" Text="Logar" x:Name="loginBtn"/>
-    </StackLayout>
-
-</ContentPage>
->>>>>>> 2b2f015847af4f673769248880132ac21487409f:apiS/ChatMobile/ChatMobile/ChatMobile/Views/MainPage.xaml

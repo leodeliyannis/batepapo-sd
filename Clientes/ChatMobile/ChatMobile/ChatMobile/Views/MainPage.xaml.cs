@@ -1,10 +1,13 @@
-<<<<<<< HEAD:ChatMobile/ChatMobile/ChatMobile/Views/MainPage.xaml.cs
 ﻿using ChatMobile.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -21,12 +24,11 @@ namespace ChatMobile
         bool _traicao { get; set; }
         bool _multas { get; set; }
         bool _educacao { get; set; }
-        List<string> topicos { get; set; }
         public MainPage()
         {
             InitializeComponent();
             InicializaListaSwitch();
-            
+
             aposentadoria.Toggled += (s, e) => _aposentadoria = !_aposentadoria;
             educacao.Toggled += (s, e) => _educacao = !_educacao;
             eleicao.Toggled += (s, e) => _eleicao = !_eleicao;
@@ -36,9 +38,10 @@ namespace ChatMobile
             seguranca.Toggled += (s, e) => _seguranca = !_seguranca;
             traicao.Toggled += (s, e) => _traicao = !_traicao;
 
-            proximaBtn.Clicked += async (s, e) => await Navigation.PushAsync(new EscolhaUsuarioPage());
+            
             loginBtn.Clicked += OnClick;
         }
+
         private void InicializaListaSwitch()
         {
             _aposentadoria = aposentadoria.IsToggled;
@@ -66,117 +69,55 @@ namespace ChatMobile
 
         private bool Conectar()
         {
-            CompletaListaTopicos();
+            List<string> lista = PreencheLista();
             Token token = new Token();
 
-            UsuarioInput usuarioInput = new UsuarioInput(user.Text, password.Text, topicos);
+            UsuarioInput usuario = new UsuarioInput { usuario = user.Text, senha = password.Text, topicos = lista };
             Argumentos argumentos = new Argumentos();
-            argumentos.Modo = "c";
-            argumentos.Ip = serverIp.Text;
-            argumentos.Porta = 10453;
-            argumentos.UsuarioInput = usuarioInput;
-            argumentos.Token = token;
 
+            argumentos.modo = "c";
+            argumentos.ip = serverIp.Text;
+            argumentos.porta = 10453;
+            argumentos.debug = true;
+            argumentos.dh = 1024;
+            argumentos.aes = 128;
+            argumentos.usuarioInput = usuario;
+            argumentos.token =token;
 
-            /*Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             IPAddress ip = IPAddress.Parse(serverIp.Text);
-            string[] str = new[] { user.Text + " - " + password.Text };
 
-            byte[] sendbuf = Encoding.ASCII.GetBytes(str[0]);
-            IPEndPoint ep = new IPEndPoint(ip, 10453);
+            var json = string.Empty;
+            json = JsonConvert.SerializeObject(usuario);
             
-            s.SendTo(sendbuf, ep);*/
+            //string str = user.Text + " - " + password.Text;
+            byte[] sendbuf = Encoding.ASCII.GetBytes(json);
+            IPEndPoint ep = new IPEndPoint(ip, 10553);
+            
+            s.SendTo(sendbuf, ep);
             return true;
         }
 
-        private void CompletaListaTopicos()
+        private List<string> PreencheLista()
         {
-            topicos = new List<string>();
-            if (aposentadoria.IsToggled)
-                topicos.Add("Aposentadoria");
-            if (educacao.IsToggled)
-                topicos.Add("Educação");
-            if (eleicao.IsToggled)
-                topicos.Add("Eleições 2018");
-            if (gasolina.IsToggled)
-                topicos.Add("Preço da gasolina");
-            if (multas.IsToggled)
-                topicos.Add("Multas de trânsito");
-            if (saude.IsToggled)
-                topicos.Add("Sistema nacional de saúde");
-            if (seguranca.IsToggled)
-                topicos.Add("Segurança pública");
-            if (traicao.IsToggled)
-                topicos.Add("Traição");
-            
-        }
-
-        private bool ValidarCampos()
-        {
-            return user.Text != string.Empty &&
-                   password.Text != string.Empty &&
-                   serverIp.Text != string.Empty;
-        }
-    }
-
-    public class UsuarioInput
-    {
-        string Usuario { get; set; }
-        string Senha { get; set; }
-        List<string> Topicos { get; set; }
-        public UsuarioInput(string usuario, string senha, List<string> lista)
-        {
-            Usuario = usuario;
-            Senha = senha;
-            Topicos = lista;
-        }
-
-    }
-}
-=======
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using Xamarin.Forms;
-
-namespace ChatMobile
-{
-	public partial class MainPage : ContentPage
-	{
-        public MainPage()
-        {
-            InitializeComponent();
-
-            loginBtn.Clicked += OnClick;
-        }
-
-        private void OnClick(object sender, EventArgs e)
-        {
-            if (ValidarCampos())
-            {
-                if (Conectar())
-                    Application.Current.MainPage = new MDPage();
-            }
-            else
-            {
-                DisplayAlert("Aviso", "Preencher todos os campos", "Fechar");
-            }
-        }
-
-        private bool Conectar()
-        {
-            /*Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            IPAddress ip = IPAddress.Parse(serverIp.Text);
-            string[] str = new[] { user.Text + " - " + password.Text };
-            byte[] sendbuf = Encoding.ASCII.GetBytes(str[0]);
-            IPEndPoint ep = new IPEndPoint(ip, 11223);
-
-            s.SendTo(sendbuf, ep);*/
-            return true;
+            List<string> lista = new List<string>();
+            if(_eleicao)
+                lista.Add("Eleições 2018");
+            if(_seguranca)
+                lista.Add("Segurança pública");
+            if(_gasolina)
+                lista.Add("Preço da gasolina");
+            if(_saude)
+                lista.Add("Sistema nacional de saúde ");
+            if(_aposentadoria)
+                lista.Add("Aposentadoria");
+            if(_traicao)
+                lista.Add("Traição");
+            if(_multas)
+                lista.Add("Multas de trânsito");
+            if(_educacao)
+                lista.Add("Educação");
+            return lista;
         }
 
         private bool ValidarCampos()
@@ -187,4 +128,3 @@ namespace ChatMobile
         }
     }
 }
->>>>>>> 2b2f015847af4f673769248880132ac21487409f:apiS/ChatMobile/ChatMobile/ChatMobile/Views/MainPage.xaml.cs

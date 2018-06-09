@@ -6,6 +6,6 @@ namespace ChatMobile.Models
 {
     public class Token
     {
-        string token { get; set; }
+        public string token { get; set; }
     }
 }
