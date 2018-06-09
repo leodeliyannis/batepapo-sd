@@ -15,7 +15,7 @@ public class DeletaUsuarioRequest {
 	
 	@XmlElement(required = true)
 	private Autenticacao autenticacao;
-	@XmlElement(required = true)
+	@XmlElement(required = true, name = "usuario")
 	private UsuarioDelete usuario = new UsuarioDelete();
 
 	public Autenticacao getAutenticacao() {
