@@ -77,10 +77,10 @@ const apiSchemaUsuarioQuery = `
     getTopicosUsuarios (input: inTopico): tyUsuario
     getUsuariosTopicos (input: inUsuario): tyUsuario
 
-    estatisticaQtdUserAcesso        (input: inToken): tyResponseEstatistica
-    estatisticaTopicosPesquisa      (input: inToken): tyResponseTopicosPesquisa
-    estatisticaQtdChatsIniciado     (input: inToken): tyResponseEstatistica
-    estatisticaUsuarioChatsIniciado (input: inUsuarioChatsIniciado): tyResponseEstatistica
+    estatisticaQuantidadesUsuariosLoginsValidos   (input: inEstatistica): tyResponseEstatistica
+    estatisticaQuantidadesTopicosMaisAcessados    (input: inEstatistica): tyResponseTopicosPesquisa
+    estatisticaQuantidadesChatsRealizados         (input: inEstatistica): tyResponseEstatistica
+    estatisticaQuantidadesChatsRealizadosUsuarios (input: inEstatisticaUsuario): tyResponseEstatistica
   }
 `
 module.exports = apiSchemaUsuarioQuery

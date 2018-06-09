@@ -4,6 +4,19 @@ const apiSchemaUsuarioMutation = `
     token: String!
   }
 
+  input inEstatistica {
+    token: String!
+    inicio: String!
+    fim: String!
+  }
+
+  input inEstatisticaUsuario {
+    token: String!
+    usuario: String!
+    inicio: String!
+    fim: String!
+  }
+
   input inLogin {
     Nome: String!
     Senha: String!
@@ -43,11 +56,6 @@ const apiSchemaUsuarioMutation = `
     _id: String!
     topico: String!
     usuario: String!
-    token: String!
-  }
-
-  input inUsuarioChatsIniciado {
-    nome: String!
     token: String!
   }
 
