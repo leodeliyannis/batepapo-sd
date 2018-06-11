@@ -69,7 +69,7 @@ namespace ChatMobile
 
         private bool Conectar()
         {
-            List<string> lista = PreencheLista();
+            int lista = PreencheLista();
             Token token = new Token();
 
             UsuarioInput usuario = new UsuarioInput { usuario = user.Text, senha = password.Text, topicos = lista };
@@ -89,34 +89,38 @@ namespace ChatMobile
 
             var json = string.Empty;
             json = JsonConvert.SerializeObject(usuario);
+            Console.WriteLine(json);
             
-            //string str = user.Text + " - " + password.Text;
+            
             byte[] sendbuf = Encoding.ASCII.GetBytes(json);
             IPEndPoint ep = new IPEndPoint(ip, 10553);
             
             s.SendTo(sendbuf, ep);
+
+
+
             return true;
         }
 
-        private List<string> PreencheLista()
+        private int PreencheLista()
         {
-            List<string> lista = new List<string>();
-            if(_eleicao)
-                lista.Add("Eleições 2018");
+            int lista = 0;
+            if (_eleicao)
+                lista++;
             if(_seguranca)
-                lista.Add("Segurança pública");
-            if(_gasolina)
-                lista.Add("Preço da gasolina");
-            if(_saude)
-                lista.Add("Sistema nacional de saúde ");
-            if(_aposentadoria)
-                lista.Add("Aposentadoria");
-            if(_traicao)
-                lista.Add("Traição");
-            if(_multas)
-                lista.Add("Multas de trânsito");
-            if(_educacao)
-                lista.Add("Educação");
+                lista++;
+            if (_gasolina)
+                lista++;
+            if (_saude)
+                lista++;
+            if (_aposentadoria)
+                lista++;
+            if (_traicao)
+                lista++;
+            if (_multas)
+                lista++;
+            if (_educacao)
+                lista++;
             return lista;
         }
 

@@ -24,13 +24,13 @@ namespace ChatMobile
         public BuscaPage ()
 		{
 			InitializeComponent ();
-            IPAddress ip = IPAddress.Parse("127.0.0.1");
+           /* IPAddress ip = IPAddress.Parse("127.0.0.1");
             TCP = new TcpClient();
             TCP.Connect(ip, 8080);
             App.Conversando = true;
             Stream = TCP.GetStream();
             StreamWriter = new StreamWriter(TCP.GetStream());
-            StreamWriter.AutoFlush = true;
+            StreamWriter.AutoFlush = true;*/
 
         }
     }
