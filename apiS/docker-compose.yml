@@ -9,13 +9,24 @@ services:
         volumes:
           - /var/run/docker.sock:/var/run/docker.sock
           - portainer_data:/data
-    tomcat:
-        build: ./ApiSoap
-        image: apisoap
+    apisWebServices:
+        build: ./ApisWebServices
+        image: apiswebservices
+        container_name: "apisWebServices"
         links:
           - loadbalancer-sd
         ports:
           - "8080:8080"
+        deploy:
+            replicas: 2
+            update_config:
+                parallelism: 2
+                delay: 10s
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                max_attempts: 3
+                window: 120s
     loadbalancer-sd:
         build: ./ApiBanco/nginx
         image: "loadbalancer-sd"
@@ -32,7 +43,7 @@ services:
         environment:
             - MESSAGE=apiBanco-node1
         ports:
-            - "4000"
+            - "4000:4000"
         links:
             - mongo
         deploy:
