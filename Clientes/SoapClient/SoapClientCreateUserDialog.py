@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import socket
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import QSize, QRect
 
@@ -16,9 +17,6 @@ class SoapClientCreateUserDialog(QDialog):
         self.textPass.setEchoMode(QLineEdit.Password)
         self.layout.addWidget(self.textPass)
         
-        self.textIPAddress = QLineEdit(self)
-        self.layout.addWidget(self.textIPAddress)
-        
         self.createUserButton = QPushButton('Criar usuário', self)
         self.createUserButton.clicked.connect(self.handleCreateUser)
         self.layout.addWidget(self.createUserButton)
@@ -27,7 +25,7 @@ class SoapClientCreateUserDialog(QDialog):
         self.registerResponse = self.soapConsumer.service.criaUsuario({
             'Nome': self.textName.text(), 
             'Senha': self.textPass.text(), 
-            'IPaddres' : self.textIPAddress.text()
+            'IPaddres' : ''
         })
         if self.registerResponse.cdRetorno == 0:
             QMessageBox.information(self, 'Informação', 'Usuário criado com sucesso!')

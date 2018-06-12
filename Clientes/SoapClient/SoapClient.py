@@ -9,7 +9,7 @@ from PyQt5.QtCore import QSize, QRect
 from zeep import Client
 
 CLIENT_TITLE  = 'Bate-Papo por Tópicos'
-CLIENT_WIDTH  = 400
+CLIENT_WIDTH  = 500
 CLIENT_HEIGHT = 400
 
 class SoapClient():

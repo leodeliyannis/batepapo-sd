@@ -15,10 +15,6 @@ class SoapClientUpdateUserDialog(QDialog):
         self.textName.setText(selectedUser.Nome)
         self.layout.addWidget(self.textName)
         
-        self.textIPAddress = QLineEdit(self)
-        self.textIPAddress.setText(selectedUser.IPaddres)
-        self.layout.addWidget(self.textIPAddress)
-        
         self.updateUserButton = QPushButton('Salvar alterações', self)
         self.updateUserButton.clicked.connect(self.handleSaveUpdates)
         self.layout.addWidget(self.updateUserButton)
@@ -28,8 +24,7 @@ class SoapClientUpdateUserDialog(QDialog):
             'autenticacao' : { 'Token' : self.authToken },
             'usuarioUpdate': {
                 'id' : self.selectedUser.id,
-                'Nome': self.textName.text(),
-                'IPaddres' : self.textIPAddress.text()
+                'Nome': self.textName.text()
             }
         })
         if self.updateUserResponse.cdRetorno == 0:
