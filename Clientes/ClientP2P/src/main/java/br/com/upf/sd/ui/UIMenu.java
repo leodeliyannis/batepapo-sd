@@ -215,6 +215,7 @@ public class UIMenu {
 		});		
 		
 		tbPesquisa.addMouseListener(new MouseAdapter() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 		        String nome = "";
@@ -255,8 +256,6 @@ public class UIMenu {
 				
 				cryptKey = new GeradorChaveCryptChat(argumentos, conecta, recebe);
 				key = cryptKey.run();
-				
-				System.out.println("Key: "+key.getEncoded());
 	  			
 				if(key != null) {
 					UIChat.main(new String[] {"r", null, null, conecta, recebe}, key, socket);
