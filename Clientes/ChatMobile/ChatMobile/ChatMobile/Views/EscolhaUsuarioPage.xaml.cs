@@ -51,7 +51,7 @@ namespace ChatMobile
             pesquisa = new Pesquisa{
                 metodo = "pesquisa_topico",
                 nome = (pckAssunto.SelectedItem as Assunto).Nome,
-                token = App.Argumentos.token
+                token = App.Argumentos.token.token
             };
             IPAddress ip = IPAddress.Parse(App.Argumentos.ip);
             TCP = new TcpClient();

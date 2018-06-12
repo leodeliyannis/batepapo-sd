@@ -90,12 +90,13 @@ namespace ChatMobile
 
             var json = string.Empty;
             json = JsonConvert.SerializeObject(usuario);
-            Console.WriteLine(json);
+            Console.Write(json);
 
             byte[] sendBuf = Encoding.UTF8.GetBytes(json);
             IPEndPoint ep = new IPEndPoint(ip, 10553);
             
             s.SendTo(sendBuf, ep);
+            Console.WriteLine("Enviou");
 
             IPEndPoint recEp = new IPEndPoint(IPAddress.Any, 0);
             EndPoint Remote = recEp;

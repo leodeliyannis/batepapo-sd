@@ -8,6 +8,6 @@ namespace ChatMobile.Models
     {
         public string nome { get; set; }
         public string metodo { get; set; }
-        public Token token { get; set; }
+        public string token { get; set; }
     }
 }
