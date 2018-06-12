@@ -8,6 +8,6 @@ namespace ChatMobile.Models
     {
         public string usuario { get; set; }
         public string senha { get; set; }
-        public int topicos { get; set; }
+        public List<string> topicos { get; set; }
     }
 }

@@ -4,7 +4,6 @@ using System.Text;
 
 namespace ChatMobile.Models
 {
-    [Serializable]
     public class Argumentos
     {
         public string modo { get; set; }

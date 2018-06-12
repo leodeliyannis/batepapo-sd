@@ -32,15 +32,26 @@ public class Main {
 		orqLoginCrypt.start();
 		/** ********************** **/
 		
-		/** Inicia thread Pesquisas**/
+		/** Inicia thread Pesquisas Sem Criptografia**/
 		Argumentos argumentosPesquisa = new Argumentos();
+		
+		argumentosPesquisa.setModo("r");
+		argumentosPesquisa.setPorta(10253);
+		argumentosPesquisa.setDebug(true);
+		
+		OrquestradorPesquisa orqPesquisa = new OrquestradorPesquisa(argumentosPesquisa);
+		orqPesquisa.start();
+		/** ********************** **/
+		
+		/** Inicia thread Pesquisas Com Criptografia**/
+		Argumentos argumentosPesquisaCrypt = new Argumentos();
 		
 		argumentosPesquisa.setModo("r");
 		argumentosPesquisa.setPorta(10353);
 		argumentosPesquisa.setDebug(true);
 		
-		OrquestradorPesquisa orqPesquisa = new OrquestradorPesquisa(argumentosPesquisa);
-		orqPesquisa.start();
+		OrquestradorPesquisaCrypt orqPesquisaCrypt = new OrquestradorPesquisaCrypt(argumentosPesquisaCrypt);
+		orqPesquisaCrypt.start();
 		/** ********************** **/
 
 	}

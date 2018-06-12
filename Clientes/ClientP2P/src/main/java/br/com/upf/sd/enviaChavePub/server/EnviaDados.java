@@ -1,4 +1,4 @@
-package br.com.upf.sd.enviaChavePub;
+package br.com.upf.sd.enviaChavePub.server;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -39,17 +39,17 @@ public class EnviaDados {
 		    	System.out.println("Dados Enviado!");	
 
 	    } catch(IOException ex ){
-	    	System.err.println("Erro no EnviaDados: "+ex);
+	    	System.err.println("Erro no EnviaDados server: "+ex);
 	    } finally {
         	//Finaliza objetos
         	try {
         		//Finaliza objetos
-        		if(!socket.isClosed()) {
+        		if(socket != null) {
         			socket.shutdownOutput();
     				socket.close();	
         		}
 			} catch (IOException e) {
-				System.err.println("Erro ao fechar as conexões: "+e);
+				System.err.println("Erro ao fechar as conexões server: "+e);
 			}
         	 
         }

@@ -1,4 +1,4 @@
-package br.com.upf.sd.enviaChavePub;
+package br.com.upf.sd.enviaChavePub.chat;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -16,6 +16,20 @@ public class RecebeDados {
 
 	public RecebeDados(){}
 	
+	public void stopSocket() {
+		try {
+			if(servidor != null) {
+				servidor.close();
+			}if(cliente != null) {
+				cliente.close();
+			}
+			
+		} catch (Exception e) {
+			System.out.println("Erro ao fechar os sockets server");
+		}
+		
+	}
+	
 	public String getIpConectado() {
 		return this.ipConectado;
 	}
@@ -27,7 +41,7 @@ public class RecebeDados {
 	private byte[] recebe(int porta, String modo, boolean modoDebug) {   
     	 byte[] message = null;
     	 
-    	 //porta += 1;
+    	 porta += 5;
     	
     	 try {
     		 
@@ -59,21 +73,22 @@ public class RecebeDados {
         	String value = new String(message);                                                          	 	   	 	   
             return DatatypeConverter.parseBase64Binary(value);
         } catch (IOException e) {
-            System.err.println("Erro no RecebeDados: "+e);
+            System.err.println("Erro no RecebeDados chat: "+e);
             return null;
             
         } finally {        	
         	try {
         		//Finaliza objetos
-        		if(!cliente.isClosed()) {
-        			//cliente.shutdownOutput();
-        			cliente.close();	
-        		}
-        		if(!servidor.isClosed()) {        			
+        		if(servidor != null) {        			
         			servidor.close();	
         		}
+        		if(cliente != null) {
+        			cliente.shutdownInput();
+        			cliente.close();	
+        		}
+        		
 			} catch (IOException e) {
-				System.err.println("Erro ao fechar as conexões: "+e);
+				System.err.println("Erro ao fechar as conexões recebe chat: "+e);
 			}
         	 
         }

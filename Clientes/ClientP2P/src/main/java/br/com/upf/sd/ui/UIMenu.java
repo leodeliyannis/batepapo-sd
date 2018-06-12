@@ -1,9 +1,10 @@
 package br.com.upf.sd.ui;
 
-import java.io.IOException;
-import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.crypto.SecretKey;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -20,7 +21,9 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
+import br.com.upf.sd.main.GeradorChaveCryptChat;
 import br.com.upf.sd.pesquisa.EnviaDadosPesquisa;
+import br.com.upf.sd.types.Argumentos;
 import br.com.upf.sd.types.Pesquisa;
 import br.com.upf.sd.types.Topico;
 import br.com.upf.sd.types.TopicosUsuariosResponse;
@@ -45,6 +48,9 @@ public class UIMenu {
 	private static TopicosUsuariosResponse topicosUsuario;
 	private static UsuariosTopicosResponse usuarioTopicos;
 	
+	private static Socket socket;
+	private static Escuta escuta;
+	
 	private static String conecta;
 	private static String recebe;
 	public static Boolean conectado;
@@ -68,8 +74,8 @@ public class UIMenu {
 			
 			topicos = topicosArgs;
 			
-			Escuta e = new Escuta();
-			e.start();
+			escuta = new Escuta();
+			escuta.start();
 
 			UIMenu window = new UIMenu();
 			window.open();		
@@ -209,6 +215,7 @@ public class UIMenu {
 		});		
 		
 		tbPesquisa.addMouseListener(new MouseAdapter() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 		        String nome = "";
@@ -216,10 +223,12 @@ public class UIMenu {
 		        for (int i = 0; i < selection.length; i++) {
 		        	nome += selection[i].getText() + " ";		        	
 		        }
+		        escuta.stopSocket();
+		        escuta.stop();
 		        if(nome.length() > 0) {
 	        		for(Usuario user: topicosUsuario.getUsuarios()) {
 	        			if(nome.contains(user.getNome())) {
-	        				UIChat.main(new String[] {"c", nome, user.getIpAddres(), conecta, recebe}, null);
+	        				UIChat.main(new String[] {"c", nome, user.getIpAddres(), conecta, recebe}, null, socket);
 	        				break;
 	        			}
 	        		}
@@ -228,26 +237,39 @@ public class UIMenu {
 	    });
 
 	}
-	static class Escuta extends Thread{
+	static class Escuta extends Thread {
 		public Escuta() {}
+		
+		private GeradorChaveCryptChat cryptKey;
+		private SecretKey key;
 		
 		@Override
 		public void run() {
-			
-			ServerSocket serverSocket;
-			
+
 			try {
-				serverSocket = new ServerSocket(Integer.parseInt(recebe));				
-				conectado = false;//TODO implementar validação de conexão do usuário
-	    		while(true) {
-					if(!conectado)
-						UIChat.main(new String[] {"r",null, null, conecta, recebe }, serverSocket);    		
-	    		}
-			} catch (NumberFormatException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Argumentos argumentos = new Argumentos();
+				
+				argumentos.setModo("r");
+				argumentos.setDebug(true);
+				argumentos.setDh(1024);
+				argumentos.setAes(128);
+				
+				cryptKey = new GeradorChaveCryptChat(argumentos, conecta, recebe);
+				key = cryptKey.run();
+	  			
+				if(key != null) {
+					UIChat.main(new String[] {"r", null, null, conecta, recebe}, key, socket);
+				}
+				
+	  			
+			} catch (Exception e) {
+				System.err.println(e);
 			}
 			
+		}
+		
+		public void stopSocket() {
+			cryptKey.stopSocket();
 		}
 	}
 	

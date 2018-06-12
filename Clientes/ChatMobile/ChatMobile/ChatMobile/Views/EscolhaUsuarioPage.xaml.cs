@@ -1,9 +1,13 @@
 ﻿using ChatMobile.Models;
 using ChatMobile.Views;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,10 +19,14 @@ namespace ChatMobile
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EscolhaUsuarioPage : ContentPage
 	{
-		public EscolhaUsuarioPage()
+        Pesquisa pesquisa { get; set; }
+        TcpClient TCP { get; set; }
+        NetworkStream Stream { get; set; }
+        StreamWriter StreamWriter { get; set; }
+        public EscolhaUsuarioPage(ObservableCollection<Assunto> assuntos)
 		{
 			InitializeComponent ();
-            InicializaTela();
+            pckAssunto.ItemsSource = assuntos;
 
             pckAssunto.SelectedIndexChanged += OnAssuntoSelecionado;
             lvUsuarios.ItemSelected += OnUsuarioSelecionado;
@@ -37,30 +45,39 @@ namespace ChatMobile
             }
         }
 
-        private void OnAssuntoSelecionado(object sender, EventArgs e)
+        private async void OnAssuntoSelecionado(object sender, EventArgs e)
         {
             //buscar lista de usuarios no servidor P2P
+            pesquisa = new Pesquisa{
+                metodo = "pesquisa_topico",
+                nome = (pckAssunto.SelectedItem as Assunto).Nome,
+                token = App.Argumentos.token
+            };
+            IPAddress ip = IPAddress.Parse(App.Argumentos.ip);
+            TCP = new TcpClient();
+            TCP.Connect(ip, 10253);
+
+            Stream = TCP.GetStream();
+            StreamWriter = new StreamWriter(TCP.GetStream());
+            StreamWriter.WriteLine(pesquisa);
+            StreamWriter.Flush();
+
+            Byte[] data = new Byte[1024*8];
+
+            var json = string.Empty;
+            json = JsonConvert.SerializeObject(pesquisa);
+            String responseData = String.Empty;
+            Int32 bytes = await Stream.ReadAsync(data, 0, data.Length);
+            responseData = Encoding.UTF8.GetString(data, 0, bytes);
+
+            //List<Usuario> usuarios = 
+
             lvUsuarios.ItemsSource = new ObservableCollection<Usuario>
             {
                 new Usuario{Id = 0, Nome = "Felipe", IP = "192.168.43.12"}
             };
         }
 
-        private void InicializaTela()
-        {
-            pckAssunto.ItemsSource = new ObservableCollection<Assunto>
-            {
-                new Assunto{Id=0, Nome="Eleição 2018"},
-                new Assunto{Id=1, Nome="Segurança Publica"},
-                new Assunto{Id=2, Nome="Preço Gasolina"},
-                new Assunto{Id=3, Nome="Sistema Nacional de Saude"},
-                new Assunto{Id=4, Nome="Aposentadoria"},
-                new Assunto{Id=5, Nome="Traição"},
-                new Assunto{Id=6, Nome="Multas de Transito"},
-                new Assunto{Id=7, Nome="Educação"}
-            };
-
-            
-        }
+        
     }
 }

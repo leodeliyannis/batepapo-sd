@@ -50,7 +50,7 @@ namespace ChatMobile.Views
             {
                 String responseData = String.Empty;
                 Int32 bytes = await Stream.ReadAsync(data, 0, data.Length); 
-                responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                responseData = System.Text.Encoding.UTF8.GetString(data, 0, bytes);
                 var label = AddLabel(Color.Blue, responseData);
                 Device.BeginInvokeOnMainThread(async () =>
                 {

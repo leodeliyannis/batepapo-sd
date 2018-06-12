@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -24,6 +25,7 @@ namespace ChatMobile
         bool _traicao { get; set; }
         bool _multas { get; set; }
         bool _educacao { get; set; }
+        ObservableCollection<Assunto> Assuntos { get; set; }
         public MainPage()
         {
             InitializeComponent();
@@ -59,7 +61,7 @@ namespace ChatMobile
             if (ValidarCampos())
             {
                 if (Conectar())
-                    Application.Current.MainPage = new MDPage();
+                    Application.Current.MainPage = new EscolhaUsuarioPage(Assuntos);
             }
             else
             {
@@ -69,20 +71,19 @@ namespace ChatMobile
 
         private bool Conectar()
         {
-            int lista = PreencheLista();
+            List<string> lista = PreencheLista();
             Token token = new Token();
 
             UsuarioInput usuario = new UsuarioInput { usuario = user.Text, senha = password.Text, topicos = lista };
-            Argumentos argumentos = new Argumentos();
-
-            argumentos.modo = "c";
-            argumentos.ip = serverIp.Text;
-            argumentos.porta = 10453;
-            argumentos.debug = true;
-            argumentos.dh = 1024;
-            argumentos.aes = 128;
-            argumentos.usuarioInput = usuario;
-            argumentos.token =token;
+            
+            App.Argumentos.modo = "c";
+            App.Argumentos.ip = serverIp.Text;
+            App.Argumentos.porta = 10553;
+            App.Argumentos.debug = true;
+            App.Argumentos.dh = 1024;
+            App.Argumentos.aes = 128;
+            App.Argumentos.usuarioInput = usuario;
+            App.Argumentos.token = token;
 
             Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             IPAddress ip = IPAddress.Parse(serverIp.Text);
@@ -90,37 +91,71 @@ namespace ChatMobile
             var json = string.Empty;
             json = JsonConvert.SerializeObject(usuario);
             Console.WriteLine(json);
-            
-            
-            byte[] sendbuf = Encoding.ASCII.GetBytes(json);
+
+            byte[] sendBuf = Encoding.UTF8.GetBytes(json);
             IPEndPoint ep = new IPEndPoint(ip, 10553);
             
-            s.SendTo(sendbuf, ep);
+            s.SendTo(sendBuf, ep);
 
+            IPEndPoint recEp = new IPEndPoint(IPAddress.Any, 0);
+            EndPoint Remote = recEp;
+            byte[] recBuf = new byte[1024];
+            int receivedDataLength = s.ReceiveFrom(recBuf, ref Remote);
 
+            Console.WriteLine(" Recebeu " + Encoding.UTF8.GetString(recBuf, 0, receivedDataLength));
+            
+            App.Argumentos.token.token = Encoding.UTF8.GetString(recBuf, 0, receivedDataLength);
+           
+            s.Close();
 
             return true;
         }
 
-        private int PreencheLista()
+        private List<string> PreencheLista()
         {
-            int lista = 0;
+            Assuntos = new ObservableCollection<Assunto>();
+            List<string> lista = new List<string>();
             if (_eleicao)
-                lista++;
+            {
+                lista.Add("Eleição 2018");
+                Assuntos.Add(new Assunto { Id = 0, Nome = "Eleição 2018" });
+            }
+                
             if(_seguranca)
-                lista++;
+            {
+                lista.Add("Segurança Publica");
+                Assuntos.Add(new Assunto { Id = 1, Nome = "Segurança Publica" });
+            }
             if (_gasolina)
-                lista++;
+            {
+                lista.Add("Preço Gasolina");;
+                Assuntos.Add(new Assunto { Id = 2, Nome = "Preço Gasolina" });
+            }
             if (_saude)
-                lista++;
+            {
+                lista.Add("Sistema Nacional de Saude");;
+                Assuntos.Add(new Assunto { Id = 3, Nome = "Sistema Nacional de Saude" });
+            }
             if (_aposentadoria)
-                lista++;
+            {
+                lista.Add("Aposentadoria");;
+                Assuntos.Add(new Assunto { Id = 4, Nome = "Aposentadoria" });
+            }
             if (_traicao)
-                lista++;
+            {
+                lista.Add("Traição");;
+                Assuntos.Add(new Assunto { Id = 5, Nome = "Traição" });
+            }
             if (_multas)
-                lista++;
+            {
+                lista.Add("Multas de Transito");;
+                Assuntos.Add(new Assunto { Id = 6, Nome = "Multas de Transito" });
+            }
             if (_educacao)
-                lista++;
+            {
+                lista.Add("Educação");;
+                Assuntos.Add(new Assunto { Id = 7, Nome = "Educação" });
+            }
             return lista;
         }
 
