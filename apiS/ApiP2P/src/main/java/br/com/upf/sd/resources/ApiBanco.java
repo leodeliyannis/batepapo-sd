@@ -29,9 +29,11 @@ public class ApiBanco {
 			WebTarget endpoint = client.target("http://127.0.0.1:80").path("/usuarios");
 
 			JSONObject usuarioJson = UsuariosJsonUtil.montaJsonDeLogin(request);
+			System.out.println("montou json login");
 
 			apiResponse = endpoint.request().accept(MediaType.APPLICATION_JSON)
 					.post(Entity.json(usuarioJson.toString()));
+			System.out.println("apiresponse");
 
 			ResponseUtil.throwApiExceptionIfAny(apiResponse);
 
