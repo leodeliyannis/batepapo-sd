@@ -76,16 +76,14 @@ namespace ChatMobile
 
             UsuarioInput usuario = new UsuarioInput { usuario = user.Text, senha = password.Text, topicos = lista };
 
-            Argumentos argumentos = new Argumentos();
-
-            argumentos.modo = "c";
-            argumentos.ip = serverIp.Text;
-            argumentos.porta = 10553;
-            argumentos.debug = true;
-            argumentos.dh = 1024;
-            argumentos.aes = 128;
-            argumentos.usuarioInput = usuario;
-            argumentos.token = token;
+            App.Argumentos.modo = "c";
+            App.Argumentos.ip = serverIp.Text;
+            App.Argumentos.porta = 10553;
+            App.Argumentos.debug = true;
+            App.Argumentos.dh = 1024;
+            App.Argumentos.aes = 128;
+            App.Argumentos.usuarioInput = usuario;
+            App.Argumentos.token = token;
 
             Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             IPAddress ip = IPAddress.Parse(serverIp.Text);
@@ -94,13 +92,19 @@ namespace ChatMobile
             json = JsonConvert.SerializeObject(usuario);
             Console.WriteLine(json);
 
-            byte[] sendBuf = Encoding.ASCII.GetBytes(json);
+            byte[] sendBuf = Encoding.UTF8.GetBytes(json);
             IPEndPoint ep = new IPEndPoint(ip, 10553);
-
-            s.SendTo(sendBuf, ep);
-            byte[] recBuf = new byte[2048];
-            s.Receive(recBuf);
             
+            s.SendTo(sendBuf, ep);
+
+            IPEndPoint recEp = new IPEndPoint(IPAddress.Any, 0);
+            EndPoint Remote = recEp;
+            byte[] recBuf = new byte[1024];
+            int receivedDataLength = s.ReceiveFrom(recBuf, ref Remote);
+
+            Console.WriteLine(" Recebeu " + Encoding.UTF8.GetString(recBuf, 0, receivedDataLength));
+            
+            App.Argumentos.token.token = Encoding.UTF8.GetString(recBuf, 0, receivedDataLength);
 
             s.Close();
 
