@@ -15,10 +15,10 @@ namespace ChatMobile
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EscolhaUsuarioPage : ContentPage
 	{
-		public EscolhaUsuarioPage()
+		public EscolhaUsuarioPage(ObservableCollection<Assunto> assuntos)
 		{
 			InitializeComponent ();
-            InicializaTela();
+            pckAssunto.ItemsSource = assuntos;
 
             pckAssunto.SelectedIndexChanged += OnAssuntoSelecionado;
             lvUsuarios.ItemSelected += OnUsuarioSelecionado;
@@ -46,21 +46,6 @@ namespace ChatMobile
             };
         }
 
-        private void InicializaTela()
-        {
-            pckAssunto.ItemsSource = new ObservableCollection<Assunto>
-            {
-                new Assunto{Id=0, Nome="Eleição 2018"},
-                new Assunto{Id=1, Nome="Segurança Publica"},
-                new Assunto{Id=2, Nome="Preço Gasolina"},
-                new Assunto{Id=3, Nome="Sistema Nacional de Saude"},
-                new Assunto{Id=4, Nome="Aposentadoria"},
-                new Assunto{Id=5, Nome="Traição"},
-                new Assunto{Id=6, Nome="Multas de Transito"},
-                new Assunto{Id=7, Nome="Educação"}
-            };
-
-            
-        }
+        
     }
 }
