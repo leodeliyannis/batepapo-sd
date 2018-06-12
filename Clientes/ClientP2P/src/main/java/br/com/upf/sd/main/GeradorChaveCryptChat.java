@@ -7,8 +7,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.DHParameterSpec;
 
 import br.com.upf.sd.Default;
-import br.com.upf.sd.enviaChavePub.EnviaDados;
-import br.com.upf.sd.enviaChavePub.RecebeDados;
+import br.com.upf.sd.enviaChavePub.chat.EnviaDados;
+import br.com.upf.sd.enviaChavePub.chat.RecebeDados;
 import br.com.upf.sd.types.Argumentos;
 
 public class GeradorChaveCryptChat {
@@ -19,21 +19,20 @@ public class GeradorChaveCryptChat {
 	private int aesTamanho = 128;
 	private int dhTamanho = 1024;
 	private Argumentos argumentos;
-	private SecretKey Key = null;
-	private byte[] chavePubKeyEncRecebida;
 	
 	private String conecta;
 	private String recebe;
+	
+	private RecebeDados recebeDados;
 
-	public GeradorChaveCryptChat(Argumentos argumentos, byte[] chavePubKeyEncRecebida, String conecta, String recebe) {
+	public GeradorChaveCryptChat(Argumentos argumentos, String conecta, String recebe) {
 		this.argumentos = argumentos;
-		this.chavePubKeyEncRecebida = chavePubKeyEncRecebida;
 		this.conecta = conecta;
 		this.recebe = recebe;
 	}
 	
-	public SecretKey getKey() {
-		return Key;
+	public void stopSocket() {
+		recebeDados.stopSocket();
 	}
 	
 	/*
@@ -45,11 +44,11 @@ public class GeradorChaveCryptChat {
 	 * Por padrão, são usados parâmetros pré-configurados~
 	 * (Criptografia AES 128 bits)
 	 */
-	public void run() {
+	public SecretKey run() {
 		
 		final String modo = argumentos.getModo();
 		final String ip = argumentos.getIp();
-		final int porta = argumentos.getPorta();	
+//		final int porta = argumentos.getPorta();	
 		modoDebug = argumentos.getDebug();
 		dhTamanho = argumentos.getDh() == null ? dhTamanho : argumentos.getDh();
 		aesTamanho = argumentos.getAes() == null ? aesTamanho : argumentos.getAes();
@@ -60,10 +59,14 @@ public class GeradorChaveCryptChat {
 				//Obtem IP da maquina		
 				diffieHellman.meuIP();
 				
-				RecebeDados recebeDados = new RecebeDados();
+				recebeDados = new RecebeDados();
 				//recebe chave em formato codificado de Alice
 				byte[] chavePubKeyEncRecebida = recebeDados.getRecebeDados(Integer.parseInt(recebe), modo, modoDebug);
 				diffieHellman.printHex(modoDebug, "\nChave publica recebida:", chavePubKeyEncRecebida);
+				
+				if(chavePubKeyEncRecebida == null) {
+					return null;
+				}
 					
 				//Bob instancia uma chave pública DH do material de chave codificada.
 				//Bob recebe os parametros DH associados a chave pulica de Alice
@@ -92,7 +95,7 @@ public class GeradorChaveCryptChat {
 		        SecretKey bobDesKey = diffieHellman.criaChaveSecreta(segredoCompartilhado, aesTamanho);                   	             	        	       
 		        diffieHellman.printHex(modoDebug, "\nChave Simetrica AES:", bobDesKey.getEncoded()); 
 		        
-		        Key = bobDesKey;
+		        return bobDesKey;
 		        
 		        //notify();
 
@@ -114,6 +117,10 @@ public class GeradorChaveCryptChat {
 		        //Alice recebe chave publica de Bob
 		        byte[] chavePubKeyEncRecebida = new RecebeDados().getRecebeDados(Integer.parseInt(recebe), modo, modoDebug);	        	       
 		        diffieHellman.printHex(modoDebug, "\nChave publica recebida:", chavePubKeyEncRecebida);
+		        
+		        if(chavePubKeyEncRecebida == null) {
+					return null;
+				}
 		        		        
 		        //Alice usa a chave pública de Bob para a primeira fase (e única) de sua versão do protocolo DH.
 				//Antes que ela possa fazê-lo, ela tem que instanciar uma chave pública DH de material de chave codificada de Bob.
@@ -125,16 +132,17 @@ public class GeradorChaveCryptChat {
 		        SecretKey aliceDesKey = diffieHellman.criaChaveSecreta(segredoCompartilhado, aesTamanho);
 		        diffieHellman.printHex(modoDebug, "\nChave Simetrica AES:", aliceDesKey.getEncoded()); 
 		        
-		        Key = aliceDesKey;	
+		        return aliceDesKey;	
 		        
 		        //notify();
 			
 			} 
 		} catch (Exception e) {
 			System.err
-					.println("Ocorreu um erro durante a execucao do Orquestrador: "
+					.println("Ocorreu um erro durante a execucao do Orquestrador Gerador Chaves: "
 							+ e);
 			System.exit(COD_ERRO_TECNICO);
 		}
+		return null;
 	}	   
 }

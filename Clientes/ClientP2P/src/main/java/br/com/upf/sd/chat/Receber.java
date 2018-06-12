@@ -1,50 +1,51 @@
 package br.com.upf.sd.chat;
 
+import java.awt.TextArea;
 import java.io.DataInputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
+import javax.swing.SwingUtilities;
 import javax.xml.bind.DatatypeConverter;
-
-import org.eclipse.swt.widgets.Display;
-import org.w3c.dom.Text;
 
 import br.com.upf.sd.Default;
 
 
-public class Receber implements Runnable {
+public class Receber {
 	
 	private DataInputStream dIn;
 	private byte[] message = null;	
 	private SecretKey desKey;	
 	private int count = 0;
 	private boolean modoDebug;
+	private String nome;
 	private String ipConexao;
-	private Text txMensagens;
-	private Display display;
+	private TextArea txMensagens;
     
-    public Receber(boolean modoDebug, DataInputStream dIn, SecretKey desKey, String ipConexao, Text txMensagens, Display display) {
+    public Receber(boolean modoDebug, DataInputStream dIn, SecretKey desKey, String nome, String ipConexao, TextArea txMensagens) {
         this.dIn = dIn;    
         this.desKey = desKey;  
         this.modoDebug = modoDebug;
+        this.nome = nome;
         this.ipConexao = ipConexao;
         this.txMensagens = txMensagens;
-        this.display = display;
     }
 	
 	public void run() {
 		Default diffieHellman = new Default();
-	
+		
 		try {
+			
+			System.out.println("Conectado a: "+ipConexao);
+			
 			while (true) {
-				
-				display.sleep();
 				
 				count++;
 				
-				int length = dIn.readInt();							
+				int length = dIn.readInt();
 				message = new byte[length];
 				
 				dIn.readFully(message, 0, message.length); // read the message				
@@ -70,12 +71,23 @@ public class Receber implements Runnable {
 		 	    
 		        System.out.println("\nMensagem recebida:\n"+new String(decoded, "UTF-8"));
 		        System.out.println("--------------------------------------");
-//		        txMensagens.append(" -- "+new String(decoded, "UTF-8")+"\n");
+		        
+		        SwingUtilities.invokeLater(new Runnable() {
+			        public void run() {
+				    	try {				
+				    		txMensagens.append(nome+" --- "+new String(decoded, "UTF-8")+"\n");								
+						} catch (UnsupportedEncodingException e) {
+							e.printStackTrace();
+						}
+				    }
+		        });
+
 			}
 			
 		} catch (Exception e) {				
 			System.out.println(ipConexao+" saiu da conversa!");	
-			System.exit(-2);
-		} 		
+//			System.exit(0);
+		}
+		
 	}		   	 	
 }

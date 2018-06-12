@@ -14,12 +14,6 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-//import org.json.simple.JSONArray;
-//import org.json.simple.JSONObject;
-//import org.json.simple.parser.*;
-
-import com.ctc.wstx.io.UTF8Reader;
-
 import br.com.upf.sd.resources.ApiBanco;
 import br.com.upf.sd.types.LoginRequest;
 import br.com.upf.sd.types.LoginResponse;
@@ -69,8 +63,7 @@ public class RecebeDadosLogin implements Runnable {
 	        	
 	        }	        
 	        
-	        UsuarioInput user = new UsuarioInput(json.getString("usuario"),json.getString("usuario"), topicos);
-						
+	        UsuarioInput user = new UsuarioInput(json.getString("usuario"),json.getString("usuario"), topicos);						
 			
 			InetAddress IPAddress = receivedPacket.getAddress();
 			int port = receivedPacket.getPort();
@@ -92,7 +85,7 @@ public class RecebeDadosLogin implements Runnable {
 			System.out.println("Response token: "+responseLogin.getDsRetorno());
 			if(responseLogin.getCdRetorno() == 0) {
 				token = new Token(responseLogin.getToken());
-				//responseRegistraTopico = apiBanco.registraTopico(user, token.gettoken());
+				responseRegistraTopico = apiBanco.registraTopico(user, token.gettoken());
 				
 				if(responseRegistraTopico.getCdRetorno() != 0 ) {
 					throw new Exception("Erro ao inserir um dos topicos no banco!");
@@ -101,11 +94,7 @@ public class RecebeDadosLogin implements Runnable {
 				token = new Token("");
 			}
 			
-			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			ObjectOutputStream os = new ObjectOutputStream(outputStream);
-			os.writeObject(token);
-			
-			mensagemEnviada = outputStream.toByteArray();
+			mensagemEnviada = token.gettoken().getBytes();
 			
 			DatagramPacket sendPacket = new DatagramPacket(mensagemEnviada, mensagemEnviada.length, IPAddress, port);
 			serverSocket.send(sendPacket);
