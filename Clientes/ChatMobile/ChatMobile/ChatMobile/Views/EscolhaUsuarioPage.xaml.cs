@@ -47,6 +47,7 @@ namespace ChatMobile
 
         private async void OnAssuntoSelecionado(object sender, EventArgs e)
         {
+            Console.WriteLine("Assunto");
             //buscar lista de usuarios no servidor P2P
             pesquisa = new Pesquisa{
                 metodo = "pesquisa_topico",
@@ -55,17 +56,21 @@ namespace ChatMobile
             };
             IPAddress ip = IPAddress.Parse(App.Argumentos.ip);
             TCP = new TcpClient();
+            Console.WriteLine("tenta conectar" + ip);
             TCP.Connect(ip, 10253);
+            Console.WriteLine("Conectou");
 
             Stream = TCP.GetStream();
             StreamWriter = new StreamWriter(TCP.GetStream());
-            StreamWriter.WriteLine(pesquisa);
+            var json = string.Empty;
+            json = JsonConvert.SerializeObject(pesquisa);
+            StreamWriter.WriteLine(json);
             StreamWriter.Flush();
+            Console.Write("Flush");
 
             Byte[] data = new Byte[1024*8];
 
-            var json = string.Empty;
-            json = JsonConvert.SerializeObject(pesquisa);
+           
             String responseData = String.Empty;
             Int32 bytes = await Stream.ReadAsync(data, 0, data.Length);
             responseData = Encoding.UTF8.GetString(data, 0, bytes);
