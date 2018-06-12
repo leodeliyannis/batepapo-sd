@@ -46,9 +46,9 @@ public class Main {
 		/** Inicia thread Pesquisas Com Criptografia**/
 		Argumentos argumentosPesquisaCrypt = new Argumentos();
 		
-		argumentosPesquisa.setModo("r");
-		argumentosPesquisa.setPorta(10353);
-		argumentosPesquisa.setDebug(true);
+		argumentosPesquisaCrypt.setModo("r");
+		argumentosPesquisaCrypt.setPorta(10353);
+		argumentosPesquisaCrypt.setDebug(true);
 		
 		OrquestradorPesquisaCrypt orqPesquisaCrypt = new OrquestradorPesquisaCrypt(argumentosPesquisaCrypt);
 		orqPesquisaCrypt.start();
