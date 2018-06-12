@@ -8,6 +8,11 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import br.com.upf.sd.resources.ApiBanco;
 import br.com.upf.sd.types.LoginRequest;
@@ -47,23 +52,22 @@ public class RecebeDadosLogin implements Runnable {
 			DatagramPacket receivedPacket = new DatagramPacket(dados, dados.length);
 			serverSocket.receive(receivedPacket);
 			
-			mensagemRecebida = new byte[receivedPacket.getLength()];
-	        System.arraycopy(receivedPacket.getData(), receivedPacket.getOffset(), mensagemRecebida, 0, receivedPacket.getLength());
+			String mensagem = new String(receivedPacket.getData());
 			
-			//int length = receivedPacket.getLength();
-			
-			byte[] decoded = mensagemRecebida;
-
-			ByteArrayInputStream in = new ByteArrayInputStream(decoded);
-			ObjectInputStream is = new ObjectInputStream(in);
-			
-			UsuarioInput user = (UsuarioInput) is.readObject();
+	        
+	        JSONObject json = new JSONObject(mensagem);
+	        JSONArray topicosJson = json.getJSONArray("topicos");
+	        List<String> topicos = new ArrayList<String>();
+	        for(int i = 0; i < topicosJson.length(); i++){
+	        	topicos.add(topicosJson.optString(i));
+	        	
+	        }	        
+	        
+	        UsuarioInput user = new UsuarioInput(json.getString("usuario"),json.getString("usuario"), topicos);						
 			
 			InetAddress IPAddress = receivedPacket.getAddress();
 			int port = receivedPacket.getPort();
-			System.out.println("IP conectado: "+IPAddress.toString().replace("/", ""));
-			System.out.println("Porta conectada: "+port);
-			
+						
 			LoginRequest request = new LoginRequest();
 			request.setNome(user.getUsuario());
 			request.setSenha(user.getSenha());
@@ -74,6 +78,8 @@ public class RecebeDadosLogin implements Runnable {
 			
 			ApiBanco apiBanco = new ApiBanco();
 			responseLogin = apiBanco.login(request);
+			System.out.println("IP conectado: "+IPAddress.toString().replace("/", ""));
+			System.out.println("Porta conectada: "+port);
 			
 			Token token;
 			System.out.println("Response token: "+responseLogin.getDsRetorno());
@@ -88,11 +94,7 @@ public class RecebeDadosLogin implements Runnable {
 				token = new Token("");
 			}
 			
-			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			ObjectOutputStream os = new ObjectOutputStream(outputStream);
-			os.writeObject(token);
-			
-			mensagemEnviada = outputStream.toByteArray();
+			mensagemEnviada = token.gettoken().getBytes();
 			
 			DatagramPacket sendPacket = new DatagramPacket(mensagemEnviada, mensagemEnviada.length, IPAddress, port);
 			serverSocket.send(sendPacket);

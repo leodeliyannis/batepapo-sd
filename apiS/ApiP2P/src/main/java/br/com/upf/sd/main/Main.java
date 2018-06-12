@@ -36,10 +36,20 @@ public class Main {
 		Argumentos argumentosPesquisa = new Argumentos();
 		
 		argumentosPesquisa.setModo("r");
-		argumentosPesquisa.setPorta(10353);
+		argumentosPesquisa.setPorta(10253);
 		argumentosPesquisa.setDebug(true);
 		
 		OrquestradorPesquisa orqPesquisa = new OrquestradorPesquisa(argumentosPesquisa);
+		orqPesquisa.start();
+		/** ********************** **/
+		
+		Argumentos argumentosPesquisaCrypt = new Argumentos();
+		
+		argumentosPesquisa.setModo("r");
+		argumentosPesquisa.setPorta(10353);
+		argumentosPesquisa.setDebug(true);
+		
+		OrquestradorPesquisaCrypt orqPesquisaCrypt = new OrquestradorPesquisaCrypt(argumentosPesquisaCrypt);
 		orqPesquisa.start();
 		/** ********************** **/
 
