@@ -75,7 +75,7 @@ namespace ChatMobile
             Token token = new Token();
 
             UsuarioInput usuario = new UsuarioInput { usuario = user.Text, senha = password.Text, topicos = lista };
-
+            
             App.Argumentos.modo = "c";
             App.Argumentos.ip = serverIp.Text;
             App.Argumentos.porta = 10553;
@@ -105,7 +105,7 @@ namespace ChatMobile
             Console.WriteLine(" Recebeu " + Encoding.UTF8.GetString(recBuf, 0, receivedDataLength));
             
             App.Argumentos.token.token = Encoding.UTF8.GetString(recBuf, 0, receivedDataLength);
-
+           
             s.Close();
 
             return true;

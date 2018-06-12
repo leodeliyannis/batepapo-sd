@@ -1,5 +1,6 @@
 ﻿using ChatMobile.Models;
 using ChatMobile.Views;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -44,7 +45,7 @@ namespace ChatMobile
             }
         }
 
-        private void OnAssuntoSelecionado(object sender, EventArgs e)
+        private async void OnAssuntoSelecionado(object sender, EventArgs e)
         {
             //buscar lista de usuarios no servidor P2P
             pesquisa = new Pesquisa{
@@ -55,9 +56,21 @@ namespace ChatMobile
             IPAddress ip = IPAddress.Parse(App.Argumentos.ip);
             TCP = new TcpClient();
             TCP.Connect(ip, 10253);
+
             Stream = TCP.GetStream();
             StreamWriter = new StreamWriter(TCP.GetStream());
-            StreamWriter.AutoFlush = true;
+            StreamWriter.WriteLine(pesquisa);
+            StreamWriter.Flush();
+
+            Byte[] data = new Byte[1024*8];
+
+            var json = string.Empty;
+            json = JsonConvert.SerializeObject(pesquisa);
+            String responseData = String.Empty;
+            Int32 bytes = await Stream.ReadAsync(data, 0, data.Length);
+            responseData = Encoding.UTF8.GetString(data, 0, bytes);
+
+            List<Usuario> usuarios = 
 
             lvUsuarios.ItemsSource = new ObservableCollection<Usuario>
             {

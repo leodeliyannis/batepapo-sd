@@ -15,6 +15,7 @@ namespace ChatMobile
 		{
 			InitializeComponent();
             Conversando = false;
+            Argumentos = new Argumentos();
 
 			MainPage = new MainPage();
 		}
