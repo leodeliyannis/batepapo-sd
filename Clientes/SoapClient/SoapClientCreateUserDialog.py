@@ -25,7 +25,7 @@ class SoapClientCreateUserDialog(QDialog):
         self.registerResponse = self.soapConsumer.service.criaUsuario({
             'Nome': self.textName.text(), 
             'Senha': self.textPass.text(), 
-            'IPaddres' : ''
+            'IPaddres' : socket.gethostbyname(socket.getfqdn())
         })
         if self.registerResponse.cdRetorno == 0:
             QMessageBox.information(self, 'Informação', 'Usuário criado com sucesso!')
