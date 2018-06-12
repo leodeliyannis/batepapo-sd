@@ -138,8 +138,6 @@ public class UIChat {
 	
 	private static Enviar conecta(String tipo) {
   		
-//  		System.out.println("Conecta recebe key");
-  		
   		if(tipo.equals("c")) {
 			try {
 				socket = new Socket(host, Integer.parseInt(conecta));
@@ -149,13 +147,9 @@ public class UIChat {
 			}
   		}
 		
-//		System.out.println("Conexão segura estabelecida");
-		
 		Default diffieHellman = new Default();
 		
 		return new Enviar(socket, count, true, Key, diffieHellman);
-  		
-  		
 	}
 	
 	private static void escuta() {
@@ -174,8 +168,6 @@ public class UIChat {
 						socket = serverSocket.accept();  
 						socket.setSoTimeout(10000000);
 					}
-					
-//					System.out.println(socket.getInetAddress().getHostAddress());
 					
 					DataInputStream dIn = new DataInputStream(socket.getInputStream());
 					
