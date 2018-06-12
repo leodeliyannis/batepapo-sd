@@ -70,7 +70,7 @@ namespace ChatMobile
             Int32 bytes = await Stream.ReadAsync(data, 0, data.Length);
             responseData = Encoding.UTF8.GetString(data, 0, bytes);
 
-            List<Usuario> usuarios = 
+            //List<Usuario> usuarios = 
 
             lvUsuarios.ItemsSource = new ObservableCollection<Usuario>
             {
