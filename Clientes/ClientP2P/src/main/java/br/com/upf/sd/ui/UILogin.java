@@ -208,7 +208,7 @@ public class UILogin {
 
 					synchronized(edl) {
 												
-						edl.wait(2000);
+						edl.wait(1000);
 						lblStatusLogin.setText("Token recebido");
 						
 						if(!br.com.upf.sd.utils.Utils.nvl(edl.getToken()).equals("")) {

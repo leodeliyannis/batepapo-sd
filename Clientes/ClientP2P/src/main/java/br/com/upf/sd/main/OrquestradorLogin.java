@@ -7,8 +7,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.DHParameterSpec;
 
 import br.com.upf.sd.Default;
-import br.com.upf.sd.enviaChavePub.EnviaDados;
-import br.com.upf.sd.enviaChavePub.RecebeDados;
+import br.com.upf.sd.enviaChavePub.server.EnviaDados;
+import br.com.upf.sd.enviaChavePub.server.RecebeDados;
 import br.com.upf.sd.exception.InteracaoException;
 import br.com.upf.sd.login.EnviaDadosLogin;
 import br.com.upf.sd.types.Argumentos;
