@@ -67,17 +67,18 @@ public class EnviaDadosLogin implements Runnable {
 			byte[] mensagemRecebida;
 		
 			try {
-				clientSocket.setSoTimeout(5000);
+				//clientSocket.setSoTimeout(10000);
 				
 				byte[] encoded  = encoded(user, diffieHellman);            	
             	
-            	//Envia dados login criptografados
+            	
             	DatagramPacket out = new DatagramPacket(encoded, encoded.length, IPAddress, porta);
 				clientSocket.send(out);
-				
+								
 				//Recebe token criptografados
 				DatagramPacket receivedPacket = new DatagramPacket(dados, dados.length);
 				clientSocket.receive(receivedPacket);
+				System.out.println("Envia dados login criptografados");
 				
 				mensagemRecebida = new byte[receivedPacket.getLength()];
 		        System.arraycopy(receivedPacket.getData(), receivedPacket.getOffset(), mensagemRecebida, 0, receivedPacket.getLength());

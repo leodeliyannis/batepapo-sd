@@ -21,20 +21,19 @@ import br.com.upf.sd.utils.ResponseUtil;
 public class ApiBanco {
 	
 	private Client client = ClientBuilder.newClient();
+	private String host = "http://192.168.1.103:80";
 	
 	public LoginResponse login(LoginRequest request) throws Exception {
 		Response apiResponse = null;
 
 		try {
-			WebTarget endpoint = client.target("http://127.0.0.1:80").path("/usuarios");
+			WebTarget endpoint = client.target(host).path("/usuarios");
 
 			JSONObject usuarioJson = UsuariosJsonUtil.montaJsonDeLogin(request);
-			System.out.println("montou json login");
-
+			
 			apiResponse = endpoint.request().accept(MediaType.APPLICATION_JSON)
 					.post(Entity.json(usuarioJson.toString()));
-			System.out.println("apiresponse");
-
+			
 			ResponseUtil.throwApiExceptionIfAny(apiResponse);
 
 			LoginResponse response = UsuariosJsonUtil.montaDadosRetornoLogin(apiResponse);		
@@ -52,7 +51,7 @@ public class ApiBanco {
 		ResponseType response = null;
 
 		try {
-			WebTarget endpoint = client.target("http://127.0.0.1:80").path("/usuarios");
+			WebTarget endpoint = client.target(host).path("/usuarios");
 			
 			for(String i: request.getTopicos()) {
 
@@ -79,7 +78,7 @@ public class ApiBanco {
 		TopicosUsuariosResponse response = null;
 
 		try {
-			WebTarget endpoint = client.target("http://127.0.0.1:80").path("/usuarios");
+			WebTarget endpoint = client.target(host).path("/usuarios");
 		
 			JSONObject usuarioJson = UsuariosJsonUtil.montaJsonPesquisaTopicos(topico, token);
 
@@ -103,7 +102,7 @@ public class ApiBanco {
 		UsuariosTopicosResponse response = null;
 
 		try {
-			WebTarget endpoint = client.target("http://127.0.0.1:80").path("/usuarios");
+			WebTarget endpoint = client.target(host).path("/usuarios");
 		
 			JSONObject usuarioJson = UsuariosJsonUtil.montaJsonPesquisaUsuarios(nome, token);
 

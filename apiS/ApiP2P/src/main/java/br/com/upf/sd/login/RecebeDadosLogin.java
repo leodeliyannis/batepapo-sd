@@ -47,6 +47,7 @@ public class RecebeDadosLogin implements Runnable {
 			
 			DatagramPacket receivedPacket = new DatagramPacket(dados, dados.length);
 			serverSocket.receive(receivedPacket);
+			System.out.println("recebeu");
 			
 			String mensagem = new String(receivedPacket.getData());
 			

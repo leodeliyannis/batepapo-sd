@@ -10,12 +10,15 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import br.com.upf.sd.resources.ApiBanco;
 import br.com.upf.sd.types.Pesquisa;
 import br.com.upf.sd.types.TopicosUsuariosResponse;
 import br.com.upf.sd.types.UsuariosTopicosResponse;
 
-public class RecebeDadosPesquisa {	
+public class RecebeDadosPesquisaMobile {	
 	
 	private ServerSocket servidor;        
     private Socket cliente;
@@ -23,7 +26,7 @@ public class RecebeDadosPesquisa {
     private DataOutputStream dOut;
     private String ipConectado;
 
-	public RecebeDadosPesquisa(){}
+	public RecebeDadosPesquisaMobile(){}
 	
 	public String getIpConectado() {
 		return this.ipConectado;
@@ -56,12 +59,15 @@ public class RecebeDadosPesquisa {
         	    message = new byte[length];
         	    dIn.readFully(message, 0, message.length); //ler a mensagem
         	}
-        	System.out.println("Escreveu mensagem ");
-        	
-        	ByteArrayInputStream in = new ByteArrayInputStream(message);
-			ObjectInputStream is = new ObjectInputStream(in);
+        	String mensagem = message.toString();
 			
-			Pesquisa pesquisa = (Pesquisa) is.readObject();
+	        
+	        JSONObject json = new JSONObject(mensagem);
+	        System.out.println("JSON "+json);
+	        
+        	
+			Pesquisa pesquisa = new Pesquisa(); 
+			
 			
 			if(pesquisa.getMetodo().equals("pesquisa_topico")) {
 				
@@ -101,13 +107,13 @@ public class RecebeDadosPesquisa {
 			
            
         } catch (IOException e) {
-            System.err.println("Erro no RecebeDados: "+e);
+            System.err.println("Erro no RecebeDadosMobile: "+e);
            
         } catch (ClassNotFoundException e) {
-        	System.err.println("Erro no RecebeDados: "+e);
+        	System.err.println("Erro no RecebeDadosMobile: "+e);
         	
 		} catch (Exception e) {
-			System.err.println("Erro no RecebeDados: "+e);
+			System.err.println("Erro no RecebeDadosMobile: "+e);
 			
 		} finally {        	
         	try {

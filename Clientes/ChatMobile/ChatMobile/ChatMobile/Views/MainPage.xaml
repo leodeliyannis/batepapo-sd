@@ -6,8 +6,8 @@
 
     <StackLayout>
         <Entry Placeholder="Usuario:" x:Name="user" Text="Claude"/>
-        <Entry Placeholder="Senha:" x:Name="password" Text="Claude"/>
-        <Entry Placeholder="IP do servidor:" x:Name="serverIp" Text="10.1.1.11"/>
+        <Entry Placeholder="Senha:" x:Name="password" Text="Claude" IsPassword="True"/>
+        <Entry Placeholder="IP do servidor:" x:Name="serverIp" Text="192.168.1.101"/>
         <Grid>
             <StackLayout Orientation="Horizontal">
                 <Label Text="Eleição 2018" HorizontalOptions="Start" VerticalOptions="Center"/>
