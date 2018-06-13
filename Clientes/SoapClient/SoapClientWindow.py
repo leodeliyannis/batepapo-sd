@@ -24,12 +24,12 @@ class SoapClientWindow(QWidget):
         self.layout = QVBoxLayout(self)
         
         self.tableWidget = QTableWidget(self)
-        self.tableWidget.setColumnCount(3)
-        for i, attr in enumerate(['ID', 'Nome', 'Endereço IP']):
+        self.tableWidget.setColumnCount(2)
+        for i, attr in enumerate(['Nome', 'Endereço IP']):
             userAttrName = QTableWidgetItem(attr)
             self.tableWidget.setHorizontalHeaderItem(i, userAttrName)
         self.layout.addWidget(self.tableWidget)
-        for i, attr in enumerate(['id', 'Nome', 'IPaddres']):
+        for i, attr in enumerate(['Nome', 'IPaddres']):
             self.tableWidget.setHorizontalHeaderItem(i, QTableWidgetItem())
         self.tableWidget.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
         
@@ -61,7 +61,7 @@ class SoapClientWindow(QWidget):
             self.usersCount = 0
             self.tableWidget.setRowCount(len(self.usersList))
             for i in range(len(self.usersList)):
-                for j, attr in enumerate(self.usersList[i]):
+                for j, attr in enumerate(['Nome', 'IPaddres']):
                     userAttr = QTableWidgetItem(self.usersList[i][attr])
                     self.tableWidget.setItem(i, j, userAttr)
             self.tableWidget.resizeColumnsToContents()

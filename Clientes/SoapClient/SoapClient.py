@@ -9,7 +9,7 @@ from PyQt5.QtCore import QSize, QRect
 from zeep import Client
 
 CLIENT_TITLE  = 'Bate-Papo por Tópicos'
-CLIENT_WIDTH  = 500
+CLIENT_WIDTH  = 300
 CLIENT_HEIGHT = 400
 
 class SoapClient():
@@ -28,5 +28,5 @@ class SoapClient():
             sys.exit(self.mainApp.exec())
 
 if __name__ == '__main__':
-    soapServiceURL = 'http://localhost:8080/100/ApiSoap?wsdl'
+    soapServiceURL = 'http://192.168.1.102:8080/ApiSOAP-V100/ApiSoap?wsdl'
     SoapClient(soapServiceURL)
